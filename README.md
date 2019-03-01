@@ -6,4 +6,4 @@ For production usage make sure you understand how terraform works and stores its
 ## Examples
 
 - AWS
-  - Default VPC - An example using the regions default VPC
+  - [Existing VPC](aws/existing-vpc/) - An example using the an already existing VPC
