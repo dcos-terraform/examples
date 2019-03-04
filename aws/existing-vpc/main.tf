@@ -54,11 +54,26 @@ variable "admin_ips" {
   type        = "list"
 }
 
+variable "vpc_id" {
+  description = "Optionally provided VPC ID to choose"
+  default     = ""
+}
+
 ////////////////////////////////////////////
 /////////////// END VARIABLES //////////////
 ////////////////////////////////////////////
 
 provider "aws" {}
+
+// we use intermediate local variables. So whenever it is needed to replace
+// or drop a modules it is easier to change just the local variable instead
+// of all other references
+locals {
+  key_name     = "${aws_key_pair.deployer.key_name}"
+  vpc_id       = "${coalesce(var.vpc_id, data.aws_vpc.default.id)}"
+  subnet_range = "${data.aws_vpc.default.cidr_block}"
+  subnet_ids   = ["${data.aws_subnet_ids.default_subnets.ids}"]
+}
 
 // create a ssh-key-pair.
 resource "aws_key_pair" "deployer" {
@@ -85,17 +100,7 @@ data "aws_vpc" "default" {
 data "aws_subnet_ids" "default_subnets" {
   provider = "aws"
 
-  vpc_id = "${data.aws_vpc.default.id}"
-}
-
-// we use intermediate local variables. So whenever it is needed to replace
-// or drop a modules it is easier to change just the local variable instead
-// of all other references
-locals {
-  key_name     = "${aws_key_pair.deployer.key_name}"
-  vpc_id       = "${data.aws_vpc.default.id}"
-  subnet_range = "${data.aws_vpc.default.cidr_block}"
-  subnet_ids   = ["${data.aws_subnet_ids.default_subnets.ids}"]
+  vpc_id = "${local.vpc_id}"
 }
 
 // Firewall. Create policies for instances and load balancers.
@@ -232,18 +237,22 @@ locals {
   bootstrap_ip         = "${module.dcos-bootstrap-instance.public_ip}"
   bootstrap_private_ip = "${module.dcos-bootstrap-instance.private_ip}"
   bootstrap_os_user    = "${module.dcos-bootstrap-instance.os_user}"
+  bootstrap_prereq-id  = "${module.dcos-bootstrap-instance.prereq-id}"
 
   master_ips         = ["${module.dcos-master-instances.public_ips}"]
   master_private_ips = ["${module.dcos-master-instances.private_ips}"]
   masters_os_user    = "${module.dcos-master-instances.os_user}"
   master_instances   = ["${module.dcos-master-instances.instances}"]
+  masters_prereq-id  = "${module.dcos-master-instances.prereq-id}"
 
-  private_agent_ips      = ["${module.dcos-privateagent-instances.public_ips}"]
-  private_agents_os_user = "${module.dcos-privateagent-instances.os_user}"
+  private_agent_ips        = ["${module.dcos-privateagent-instances.public_ips}"]
+  private_agents_os_user   = "${module.dcos-privateagent-instances.os_user}"
+  private_agents_prereq-id = "${module.dcos-privateagent-instances.prereq-id}"
 
-  public_agent_ips       = ["${module.dcos-publicagent-instances.public_ips}"]
-  public_agents_os_user  = "${module.dcos-publicagent-instances.os_user}"
-  public_agent_instances = ["${module.dcos-publicagent-instances.instances}"]
+  public_agent_ips        = ["${module.dcos-publicagent-instances.public_ips}"]
+  public_agents_os_user   = "${module.dcos-publicagent-instances.os_user}"
+  public_agent_instances  = ["${module.dcos-publicagent-instances.instances}"]
+  public_agents_prereq-id = "${module.dcos-publicagent-instances.prereq-id}"
 }
 
 // Load balancers is providing three load balancers.
@@ -303,22 +312,26 @@ module "dcos-install" {
   bootstrap_ip         = "${local.bootstrap_ip}"
   bootstrap_private_ip = "${local.bootstrap_private_ip}"
   bootstrap_os_user    = "${local.bootstrap_os_user}"
+  bootstrap_prereq-id  = "${local.bootstrap_prereq-id}"
 
   # master
   master_ips         = ["${local.master_ips}"]
   master_private_ips = ["${local.master_private_ips}"]
   masters_os_user    = "${local.masters_os_user}"
+  masters_prereq-id  = "${local.masters_prereq-id}"
   num_masters        = "${var.num_masters}"
 
   # private agent
-  private_agent_ips      = ["${local.private_agent_ips}"]
-  private_agents_os_user = "${local.private_agents_os_user}"
-  num_private_agents     = "${var.num_private_agents}"
+  private_agent_ips        = ["${local.private_agent_ips}"]
+  private_agents_os_user   = "${local.private_agents_os_user}"
+  private_agents_prereq-id = "${local.private_agents_prereq-id}"
+  num_private_agents       = "${var.num_private_agents}"
 
   # public agent
-  public_agent_ips      = ["${local.public_agent_ips}"]
-  public_agents_os_user = "${local.public_agents_os_user}"
-  num_public_agents     = "${var.num_public_agents}"
+  public_agent_ips        = ["${local.public_agent_ips}"]
+  public_agents_os_user   = "${local.public_agents_os_user}"
+  public_agents_prereq-id = "${local.public_agents_prereq-id}"
+  num_public_agents       = "${var.num_public_agents}"
 
   # DC/OS options
   dcos_install_mode = "install"
