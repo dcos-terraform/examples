@@ -11,7 +11,7 @@ EOF
 
 variable "dcos_version" {
   description = "Specify the availability zones to be used"
-  default     = "1.12.2"
+  default     = "1.12.1"
 }
 
 variable "cluster_name" {
@@ -21,12 +21,12 @@ variable "cluster_name" {
 
 variable "num_masters" {
   description = "Specify the amount of masters. For redundancy you should have at least 3"
-  default     = 3
+  default     = 1
 }
 
 variable "num_private_agents" {
   description = "Specify the amount of private agents. These agents will provide your main resources"
-  default     = 2
+  default     = 1
 }
 
 variable "num_public_agents" {
@@ -238,12 +238,14 @@ locals {
   masters_os_user    = "${module.dcos-master-instances.os_user}"
   master_instances   = ["${module.dcos-master-instances.instances}"]
 
-  private_agent_ips      = ["${module.dcos-privateagent-instances.public_ips}"]
-  private_agents_os_user = "${module.dcos-privateagent-instances.os_user}"
+  private_agent_ips         = ["${module.dcos-privateagent-instances.public_ips}"]
+  private_agent_private_ips = ["${module.dcos-privateagent-instances.private_ips}"]
+  private_agents_os_user    = "${module.dcos-privateagent-instances.os_user}"
 
-  public_agent_ips       = ["${module.dcos-publicagent-instances.public_ips}"]
-  public_agents_os_user  = "${module.dcos-publicagent-instances.os_user}"
-  public_agent_instances = ["${module.dcos-publicagent-instances.instances}"]
+  public_agent_ips         = ["${module.dcos-publicagent-instances.public_ips}"]
+  public_agent_private_ips = ["${module.dcos-publicagent-instances.private_ips}"]
+  public_agents_os_user    = "${module.dcos-publicagent-instances.os_user}"
+  public_agent_instances   = ["${module.dcos-publicagent-instances.instances}"]
 }
 
 // Load balancers is providing three load balancers.
@@ -259,9 +261,10 @@ locals {
 //   it will make sure your custermers will allways be able to access one of the public agents even if one failed.
 //   you can specify masters_acm_cert_arn to use an ACM certificate for proper SSL termination.
 //   https://registry.terraform.io/modules/dcos-terraform/elb-dcos/aws
-module "dcos-elb" {
-  source  = "dcos-terraform/elb-dcos/aws"
-  version = "~> 0.1.0"
+
+module "dcos-lb" {
+  source  = "dcos-terraform/lb-dcos/aws"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -274,9 +277,11 @@ module "dcos-elb" {
   security_groups_masters_internal = ["${local.security_groups_elb_masters_internal}"]
   security_groups_public_agents    = ["${local.security_groups_elb_public_agents}"]
 
-  master_instances = ["${local.master_instances}"]
+  master_instances       = ["${module.dcos-master-instances.instances}"]
+  public_agent_instances = ["${module.dcos-publicagent-instances.instances}"]
 
-  public_agent_instances = ["${local.public_agent_instances}"]
+  num_masters       = "${var.num_masters}"
+  num_public_agents = "${var.num_public_agents}"
 
   tags = "${var.tags}"
 }
@@ -285,7 +290,7 @@ module "dcos-elb" {
 // or drop a modules it is easier to change just the local variable instead
 // of all other references
 locals {
-  elb_masters_dns_name = "${module.dcos-elb.masters_dns_name}"
+  elb_masters_dns_name = "${module.dcos-lb.masters_dns_name}"
 }
 
 // DC/OS Install module takes a list of public and private ip addresses of each of the node type to install.
@@ -311,17 +316,18 @@ module "dcos-install" {
   num_masters        = "${var.num_masters}"
 
   # private agent
-  private_agent_ips      = ["${local.private_agent_ips}"]
-  private_agents_os_user = "${local.private_agents_os_user}"
-  num_private_agents     = "${var.num_private_agents}"
+  private_agent_ips         = ["${local.private_agent_ips}"]
+  private_agent_private_ips = ["${local.private_agent_private_ips}"]
+  private_agents_os_user    = "${local.private_agents_os_user}"
+  num_private_agents        = "${var.num_private_agents}"
 
   # public agent
-  public_agent_ips      = ["${local.public_agent_ips}"]
-  public_agents_os_user = "${local.public_agents_os_user}"
-  num_public_agents     = "${var.num_public_agents}"
+  public_agent_ips         = ["${local.public_agent_ips}"]
+  public_agent_private_ips = ["${local.public_agent_private_ips}"]
+  public_agents_os_user    = "${local.public_agents_os_user}"
+  num_public_agents        = "${var.num_public_agents}"
 
   # DC/OS options
-  dcos_install_mode = "install"
   dcos_cluster_name = "${var.cluster_name}"
   dcos_version      = "${var.dcos_version}"
 
@@ -348,7 +354,7 @@ METADATA="$(curl http://169.254.169.254/latest/dynamic/instance-identity/documen
 REGION=$(echo $METADATA | grep -Po "\"region\"\s+:\s+\"(.*?)\"" | cut -f2 -d:)
 ZONE=$(echo $METADATA | grep -Po "\"availabilityZone\"\s+:\s+\"(.*?)\"" | cut -f2 -d:)
 
-echo "{\"fault_domain\":{\"region\":{\"name\": $REGION},\"zone\":{\"name\": $ZONE}}}"
+echo "{\"fault_domain\":{\"region\":{\"name\": \"$REGION\"},\"zone\":{\"name\": \"$ZONE\"}}}"
 EOF
 
   dcos_variant                   = "${var.dcos_type}"
