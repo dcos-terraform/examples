@@ -10,8 +10,8 @@ EOF
 }
 
 variable "dcos_version" {
-  description = "Specify the availability zones to be used"
-  default     = "1.12.1"
+  description = "DC/OS version to be used"
+  default     = "1.12.3"
 }
 
 variable "cluster_name" {
@@ -102,7 +102,7 @@ locals {
 // https://registry.terraform.io/modules/dcos-terraform/security-groups/aws
 module "dcos-security-groups" {
   source  = "dcos-terraform/security-groups/aws"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -130,7 +130,7 @@ locals {
 // https://registry.terraform.io/modules/dcos-terraform/iam/aws
 module "dcos-iam" {
   source  = "dcos-terraform/iam/aws"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -143,7 +143,7 @@ module "dcos-iam" {
 // https://registry.terraform.io/modules/dcos-terraform/bootstrap/aws
 module "dcos-bootstrap-instance" {
   source  = "dcos-terraform/bootstrap/aws"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -163,7 +163,7 @@ module "dcos-bootstrap-instance" {
 // https://registry.terraform.io/modules/dcos-terraform/masters/aws
 module "dcos-master-instances" {
   source  = "dcos-terraform/masters/aws"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -185,7 +185,7 @@ module "dcos-master-instances" {
 // https://registry.terraform.io/modules/dcos-terraform/private-agents/aws
 module "dcos-privateagent-instances" {
   source  = "dcos-terraform/private-agents/aws"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -207,7 +207,7 @@ module "dcos-privateagent-instances" {
 // https://registry.terraform.io/modules/dcos-terraform/public-agents/aws
 module "dcos-publicagent-instances" {
   source  = "dcos-terraform/public-agents/aws"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   providers = {
     aws = "aws"
@@ -302,7 +302,7 @@ locals {
 // specified in this module. A good description could be found here: https://registry.terraform.io/modules/dcos-terraform/dcos-core/template
 module "dcos-install" {
   source  = "dcos-terraform/dcos-install-remote-exec/null"
-  version = "~> 0.1.0"
+  version = "~> 0.2.0"
 
   # bootstrap
   bootstrap_ip         = "${local.bootstrap_ip}"
