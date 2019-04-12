@@ -290,7 +290,7 @@ module "dcos-lb" {
 // or drop a modules it is easier to change just the local variable instead
 // of all other references
 locals {
-  elb_masters_dns_name = "${module.dcos-lb.masters_dns_name}"
+  masters_dns_name = "${module.dcos-lb.masters_dns_name}"
 }
 
 // DC/OS Install module takes a list of public and private ip addresses of each of the node type to install.
@@ -363,7 +363,7 @@ EOF
   dcos_exhibitor_storage_backend = "static"
 }
 
-output "elb.masters_dns_name" {
+output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${local.elb_masters_dns_name}"
+  value       = "${local.masters_dns_name}"
 }

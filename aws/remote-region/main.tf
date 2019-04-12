@@ -166,7 +166,7 @@ module "vpc-connection-master-euw1" {
   remote_subnet_range = "${local.region_networks["eu-west-1"]}"
 }
 
-output "elb.masters_dns_name" {
+output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
   value       = "${module.dcos.masters-loadbalancer}"
 }

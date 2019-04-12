@@ -63,7 +63,7 @@ module "volumeagent" {
   num_private_agents = "2"
 }
 
-output "elb.masters_dns_name" {
+output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
   value       = "${module.dcos.masters-loadbalancer}"
 }
