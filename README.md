@@ -1,9 +1,15 @@
 # DC/OS Terraform advanced examples
-This repository contains advanced methods of using the underlying modules of the DC/OS Univerversal Installer.
+This repository contains advanced methods of using the underlying modules of the DC/OS Universal Installer.
 
 For production usage make sure you understand how terraform works and stores its state.
 
 ## Examples
 
 - AWS
-  - [Existing VPC](aws/existing-vpc/) - An example using the an already existing VPC
+  - [Simple](aws/simple/) - An example for a simple setup of DC/OS.
+  - [Existing VPC](aws/existing-vpc/) - An example using an already existing VPC.
+  - [Additional Instances](aws/additional-instances/) - An example for provisioning extra agent nodes with another disk configuration.
+  - [Remote Region](aws/remote-region/) - An example for using remote regions.
+- GCP
+  - [Simple](gcp/simple/) - An example for a simple setup of DC/OS.
+  - [Additional Instances](gcp/additional-instances/) - An example for provisioning extra agent nodes with another disk configuration.
