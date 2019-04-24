@@ -10,6 +10,11 @@ data "http" "whatismyip" {
 locals {
   region_hub     = "us-west-2"
   region_spoke_1 = "us-west-2" # Limitation by GPU node's AMI ID that only lives in us-west-2
+
+  num_masters            = "1"
+  num_private_agents     = "3"
+  num_public_agents      = "1"
+  num_gpu_private_agents = "1"
 }
 
 provider "aws" {
@@ -31,9 +36,9 @@ module "dcos" {
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
   dcos_resolvers     = "\n   - 169.254.169.253"
-  num_masters        = "1"
-  num_private_agents = "5"
-  num_public_agents  = "1"
+  num_masters        = "${local.num_masters}"
+  num_private_agents = "${local.num_private_agents}"
+  num_public_agents  = "${local.num_public_agents}"
   availability_zones = ["us-west-2a", "us-west-2b"]
 
   #private_agents_instance_type = "m5a.4xlarge"
@@ -85,7 +90,7 @@ module "spoke-1" {
   # bootstrap_prereq-id  = "${module.dcos.infrastructure-bootstrap.prereq-id}"
   # masters_prereq-id  = "${module.dcos.infrastructure-masters.prereq-id}"
 
-  num_private_agents           = "1"
+  num_private_agents           = "${local.num_gpu_private_agents}"
   num_public_agents            = "0"
   private_agents_instance_type = "g3.8xlarge"
   public_agents_instance_type  = "g3.8xlarge"
