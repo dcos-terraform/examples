@@ -35,6 +35,17 @@ locals {
   num_remote_private_agents = "3"
   num_remote_public_agents  = "1"
   num_gpu_private_agents    = "1"
+
+  // us-east-1e does not have m5 instances
+  us_east_1_availability_zones  = ["us-east-1a",
+                                   "us-east-1b",
+                                   "us-east-1c",
+                                   "us-east-1d",
+                                   "us-east-1f"]
+  // us-west-2 only has 4 Availabilitiy Zones (a-d)
+  us_west_2_availability_zones  = ["us-west-2a",
+                                   "us-west-2b",
+                                   "us-west-2c"]
 }
 
 module "dcos" {
@@ -55,6 +66,9 @@ module "dcos" {
   public_agents_instance_type  = "m5.xlarge"
   accepted_internal_networks   = "${values(local.region_networks)}"
   additional_private_agent_ips = ["${module.dcos-usw2.private_agents.private_ips}", "${module.dcos-cac1.private_agents.private_ips}"]
+
+  // us-east-1e does not have m5 instances
+  availability_zones           = ["${local.us_east_1_availability_zones}"]
 
   dcos_version              = "1.12.3"
   dcos_security             = "strict"
@@ -118,6 +132,7 @@ module "dcos-usw2" {
   lb_disable_masters         = true
   ssh_public_key_file        = "${local.ssh_public_key_file}"
   subnet_range               = "${local.region_networks["usw2"]}"
+  availability_zones         = ["${local.us_west_2_availability_zones}"]
 
   providers = {
     aws = "aws.usw2"
