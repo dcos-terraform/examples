@@ -56,11 +56,6 @@ module "dcos" {
   accepted_internal_networks   = "${values(local.region_networks)}"
   additional_private_agent_ips = ["${module.dcos-usw2.private_agents.private_ips}", "${module.dcos-cac1.private_agents.private_ips}"]
 
-  dcos_config = <<EOF
-mesos_enable_seccomp: 'true'
-enable_mesos_input_plugin: 'true'
-EOF
-
   dcos_version              = "1.12.3"
   dcos_security             = "strict"
 
