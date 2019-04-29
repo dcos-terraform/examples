@@ -140,7 +140,8 @@ module "dcos-usw2" {
 }
 
 module "vpc-connection-master-usw2" {
-  source = "git::ssh://git@github.com/dcos-terraform/terraform-aws-vpc-peering?ref=release/v0.2" # module init the peering
+  source  = "dcos-terraform/vpc-peering/aws"
+  version = "~> 1.0.0"
 
   providers = {
     "aws.local"  = "aws.master"
@@ -174,7 +175,8 @@ module "dcos-cac1" {
 }
 
 module "vpc-connection-master-cac1" {
-  source = "git::ssh://git@github.com/dcos-terraform/terraform-aws-vpc-peering?ref=release/v0.2" # module init the peering
+  source  = "dcos-terraform/vpc-peering/aws"
+  version = "~> 1.0.0"
 
   providers = {
     "aws.local"  = "aws.master"
@@ -188,7 +190,8 @@ module "vpc-connection-master-cac1" {
 }
 
 module "vpc-connection-master-cac1-usw2" {
-  source = "git::ssh://git@github.com/dcos-terraform/terraform-aws-vpc-peering?ref=release/v0.2" # module init the peering
+  source  = "dcos-terraform/vpc-peering/aws"
+  version = "~> 1.0.0"
 
   providers = {
     "aws.local"  = "aws.cac1"
