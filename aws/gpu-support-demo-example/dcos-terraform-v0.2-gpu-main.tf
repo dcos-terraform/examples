@@ -20,7 +20,7 @@ provider "aws" {
 locals {
   ssh_public_key_file = "~/.ssh/key.pub"
   cluster_name        = "mbernadin3-gpu-demo"
-  admin_ips           = ["${data.http.whatismyip.body}/32", "0.0.0.0/0"]
+  admin_ips           = ["${data.http.whatismyip.body}/32"]
 
   region_networks = {
     # dont use 172.17/26 as its used by docker.
