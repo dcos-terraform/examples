@@ -6,6 +6,7 @@ This approach leverages a pooled agent module that allows users to select aribit
 
  * [dcos-terraform-v0.1-gpu-main.tf](./dcos-terraform-v0.1-gpu-main.tf)
  * [dcos-terraform-v0.2-gpu-main.tf](./dcos-terraform-v0.2-gpu-main.tf)
+ * [dcos-terraform-v0.2-gpu-multi-region-main.tf](./dcos-terraform-v0.2-gpu-multi-region-main.tf)
 
 ### Limitations
 
