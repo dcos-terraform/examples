@@ -2,7 +2,10 @@
 
 We need a testing example that shows an implementation of GPU support of the universal installer.
 
-This approach leverages a pooled agent module that allows users to select aribitrary modules and configurations that is seperate from the `dcos` module that lives in the main.tf. The example lives in the [main.tf](./main.tf) file. 
+This approach leverages a pooled agent module that allows users to select aribitrary modules and configurations that is seperate from the `dcos` module that lives in the main.tf. The example lives in these places below for the main.tf file:
+
+ * [dcos-terraform-v0.1-gpu-main.tf](./dcos-terraform-v0.1-gpu-main.tf)
+ * [dcos-terraform-v0.2-gpu-main.tf](./dcos-terraform-v0.2-gpu-main.tf)
 
 ### Limitations
 
