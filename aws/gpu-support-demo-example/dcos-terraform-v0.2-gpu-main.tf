@@ -68,12 +68,6 @@ module "dcos" {
   dcos_version              = "1.12.3"
   dcos_security             = "strict"
 
-  tags = {
-    owner = "mbernadin"
-
-    expiration = "2d"
-  }
-
   private_agents_extra_volumes = [
     {
       size        = "100"

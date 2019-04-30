@@ -6,7 +6,22 @@ This approach leverages a pooled agent module that allows users to select aribit
 
  * [dcos-terraform-v0.1-gpu-main.tf](./dcos-terraform-v0.1-gpu-main.tf)
  * [dcos-terraform-v0.2-gpu-main.tf](./dcos-terraform-v0.2-gpu-main.tf)
+ * [dcos-terraform-v0.2-gpu-main-open.tf](./dcos-terraform-v0.2-gpu-main-open.tf)
  * [dcos-terraform-v0.2-gpu-multi-region-main.tf](./dcos-terraform-v0.2-gpu-multi-region-main.tf)
+
+## Cloud Cleaner Support (Optional)
+
+```hcl
+module "dcos" {
+...
+  tags = {
+    owner = "<your_slack_id>"
+
+    expiration = "2d"
+  }
+...
+}
+```
 
 ### Limitations
 
