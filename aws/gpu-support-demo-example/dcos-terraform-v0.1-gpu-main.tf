@@ -92,8 +92,8 @@ module "spoke-1" {
 
   num_private_agents           = "${local.num_gpu_private_agents}"
   num_public_agents            = "0"
-  private_agents_instance_type = "g3.8xlarge"
-  public_agents_instance_type  = "g3.8xlarge"
+  private_agents_instance_type = "g3.4xlarge"
+  public_agents_instance_type  = "g3.4xlarge"
   #availability_zones           = ["us-west-2a"]
   subnet_range      = "172.13.0.0/16"
   dcos_install_mode = "${var.dcos_install_mode}"

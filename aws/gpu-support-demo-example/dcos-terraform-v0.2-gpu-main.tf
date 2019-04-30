@@ -120,8 +120,8 @@ module "dcos-usw2" {
   num_masters                  = 0
   num_private_agents           = "${local.num_gpu_private_agents}"
   num_public_agents            = 0
-  private_agents_instance_type = "g3.8xlarge"
-  public_agents_instance_type  = "g3.8xlarge"
+  private_agents_instance_type = "g3.4xlarge"
+  public_agents_instance_type  = "g3.4xlarge"
   lb_disable_public_agents     = true
   lb_disable_masters           = true
   ssh_public_key_file          = "${local.ssh_public_key_file}"

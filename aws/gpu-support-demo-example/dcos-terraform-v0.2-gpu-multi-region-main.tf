@@ -127,8 +127,8 @@ module "dcos-usw2" {
   num_public_agents            = 0
   lb_disable_public_agents     = true
   lb_disable_masters           = true
-  private_agents_instance_type = "g3.8xlarge"
-  public_agents_instance_type  = "g3.8xlarge"
+  private_agents_instance_type = "g3.4xlarge"
+  public_agents_instance_type  = "g3.4xlarge"
   ssh_public_key_file          = "${local.ssh_public_key_file}"
   subnet_range                 = "${local.region_networks["usw2"]}"
   availability_zones           = ["${local.us_west_2_availability_zones}"]
