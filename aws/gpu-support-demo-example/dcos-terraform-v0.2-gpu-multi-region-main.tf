@@ -37,15 +37,18 @@ locals {
   num_gpu_private_agents    = "1"
 
   // us-east-1e does not have m5 instances
-  us_east_1_availability_zones  = ["us-east-1a",
-                                   "us-east-1b",
-                                   "us-east-1c",
-                                   "us-east-1d",
-                                   "us-east-1f"]
+  us_east_1_availability_zones = ["us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1f",
+  ]
+
   // us-west-2 only has 4 Availabilitiy Zones (a-d)
-  us_west_2_availability_zones  = ["us-west-2a",
-                                   "us-west-2b",
-                                   "us-west-2c"]
+  us_west_2_availability_zones = ["us-west-2a",
+    "us-west-2b",
+    "us-west-2c",
+  ]
 }
 
 module "dcos" {
@@ -68,10 +71,10 @@ module "dcos" {
   additional_private_agent_ips = ["${module.dcos-usw2.private_agents.private_ips}", "${module.dcos-cac1.private_agents.private_ips}"]
 
   // us-east-1e does not have m5 instances
-  availability_zones           = ["${local.us_east_1_availability_zones}"]
+  availability_zones = ["${local.us_east_1_availability_zones}"]
 
-  dcos_version              = "1.12.3"
-  dcos_security             = "strict"
+  dcos_version  = "1.12.3"
+  dcos_security = "strict"
 
   private_agents_extra_volumes = [
     {
@@ -112,21 +115,23 @@ output "public-agents-loadbalancer" {
 }
 
 module "dcos-usw2" {
-  source                     = "dcos-terraform/infrastructure/aws"
-  version                    = "~> 0.2.0"
-  admin_ips                  = ["${local.admin_ips}"]
-  name_prefix                = "usw2"
-  aws_ami                    = "ami-d54a2cad"
-  cluster_name               = "${local.cluster_name}"
-  accepted_internal_networks = "${values(local.region_networks)}"
-  num_masters                = 0
-  num_private_agents         = "${local.num_gpu_private_agents}"
-  num_public_agents          = 0
-  lb_disable_public_agents   = true
-  lb_disable_masters         = true
-  ssh_public_key_file        = "${local.ssh_public_key_file}"
-  subnet_range               = "${local.region_networks["usw2"]}"
-  availability_zones         = ["${local.us_west_2_availability_zones}"]
+  source                       = "dcos-terraform/infrastructure/aws"
+  version                      = "~> 0.2.0"
+  admin_ips                    = ["${local.admin_ips}"]
+  name_prefix                  = "usw2"
+  aws_ami                      = "ami-d54a2cad"
+  cluster_name                 = "${local.cluster_name}"
+  accepted_internal_networks   = "${values(local.region_networks)}"
+  num_masters                  = 0
+  num_private_agents           = "${local.num_gpu_private_agents}"
+  num_public_agents            = 0
+  lb_disable_public_agents     = true
+  lb_disable_masters           = true
+  private_agents_instance_type = "g3.8xlarge"
+  public_agents_instance_type  = "g3.8xlarge"
+  ssh_public_key_file          = "${local.ssh_public_key_file}"
+  subnet_range                 = "${local.region_networks["usw2"]}"
+  availability_zones           = ["${local.us_west_2_availability_zones}"]
 
   providers = {
     aws = "aws.usw2"
