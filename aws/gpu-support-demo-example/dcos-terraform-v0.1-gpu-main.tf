@@ -32,7 +32,7 @@ module "dcos" {
   dcos_instance_os = "coreos_1855.5.0"
 
   cluster_name        = "gpu-support-hub"
-  ssh_public_key_file = "~/.ssh/key.pub"
+  ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
   dcos_resolvers     = "\n   - 169.254.169.253"
@@ -78,7 +78,7 @@ module "spoke-1" {
   }
 
   cluster_name        = "gpu-support-spoke1"
-  ssh_public_key_file = "~/.ssh/key.pub"
+  ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
   aws_ami             = "ami-d54a2cad"
 

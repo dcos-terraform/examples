@@ -17,7 +17,7 @@ resource "random_id" "cluster_name" {
 
 # lets define variables which are shared between all regions
 locals {
-  ssh_public_key_file = "~/.ssh/key.pub"
+  ssh_public_key_file = "~/.ssh/id_rsa.pub"
   cluster_name        = "${random_id.cluster_name.hex}"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
