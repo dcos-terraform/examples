@@ -1,7 +1,7 @@
 provider "aws" {
   # Change your default region here
   region = "us-east-1"
-  alias  = "master"
+  alias  = "local"
 }
 
 provider "aws" {
@@ -18,7 +18,7 @@ locals {
 
   region_networks = {
     // dont use 172.17/26 as its used by docker.
-    "master" = "172.16.0.0/16" // this is the default
+    "local" = "172.16.0.0/16" // this is the default
     "usw2"   = "10.128.0.0/16"
   }
 
@@ -36,7 +36,7 @@ module "dcos" {
   cluster_name        = "${local.cluster_name}"
   ssh_public_key_file = "${local.ssh_public_key_file}"
   admin_ips           = ["${local.admin_ips}"]
-  subnet_range        = "${local.region_networks["master"]}"
+  subnet_range        = "${local.region_networks["local"]}"
 
   num_masters        = "${local.num_masters}"
   num_private_agents = "${local.num_local_private_agents}"
@@ -50,7 +50,7 @@ module "dcos" {
   additional_private_agent_ips = ["${module.dcos-usw2.private_agents.private_ips}"]
 
   providers = {
-    aws = "aws.master"
+    aws = "aws.local"
   }
 
   dcos_variant              = "ee"
@@ -99,17 +99,17 @@ module "dcos-usw2" {
   }
 }
 
-module "vpc-connection-master-usw2" {
+module "vpc-connection-local-usw2" {
   source  = "dcos-terraform/vpc-peering/aws" // module init the peering
   version = "~> 1.0.0"
 
   providers = {
-    "aws.local"  = "aws.master"
+    "aws.local"  = "aws.local"
     "aws.remote" = "aws.usw2"
   }
 
   local_vpc_id        = "${module.dcos.infrastructure.vpc.id}"
-  local_subnet_range  = "${local.region_networks["master"]}"
+  local_subnet_range  = "${local.region_networks["local"]}"
   remote_vpc_id       = "${module.dcos-usw2.vpc.id}"
   remote_subnet_range = "${local.region_networks["usw2"]}"
 }
