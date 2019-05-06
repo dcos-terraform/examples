@@ -7,3 +7,4 @@ For production usage make sure you understand how terraform works and stores its
 
 - AWS
   - [Existing VPC](aws/existing-vpc/) - An example using the an already existing VPC
+  - [GPU Demo](aws/gpu-support-demo-example) - An example using GPU agents with multi-region support
