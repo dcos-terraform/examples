@@ -5,7 +5,7 @@
 */
 
 module "dcos-infrastructure" {
-  source = "github.com/dcos-terraform/examples//openstack/dcos-terraform-infrastructure-openstack?ref=openstack"
+  source = "github.com/dcos-terraform/examples//openstack/dcos-terraform-infrastructure-openstack"
 
   cluster_name        = "${var.cluster_name}"
   floating_ip_pool    = "${var.floating_ip_pool}"

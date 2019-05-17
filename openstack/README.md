@@ -19,7 +19,7 @@ You will also need a compatible operating system image to use, in this case Cent
 
 It's designed function exactly as per the [DC/OS Universal Installer](https://docs.mesosphere.com/1.13/installing/evaluation/) for other supported platforms, with OpenStack-specific customisations and idiosyncrasies.
 
-No guarantees are made about the utility of the resulting DC/OS deployment, however it's been successfully tested on a couple of public OpenStack deployments including [CityCloud](https://citycloud.com).
+No guarantees are made about the utility of the resulting DC/OS deployment, however it's been successfully tested on a couple of public OpenStack deployments including [CityCloud](https://citycloud.com).  It should also go without saying that this is entirely unsupported in any way.
 
 ## Getting started
 
@@ -48,7 +48,7 @@ module "dcos" {
 
   dcos_version              = "1.13"
   dcos_variant              = "open"
-  custom_dcos_download_path = "https://downloads.dcos.io/dcos/stable/1.13.0-beta/dcos_generate_config.sh"
+  custom_dcos_download_path = "https://downloads.dcos.io/dcos/stable/1.13.0/dcos_generate_config.sh"
 
   bootstrap_image     = "CentOS 7.6-docker"
   master_image        = "CentOS 7.6-docker"
