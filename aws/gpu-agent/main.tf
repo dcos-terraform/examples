@@ -36,6 +36,10 @@ module "gpuagent" {
   source  = "dcos-terraform/private-agents/aws"
   version = "~> 0.2.0"
 
+  providers = {
+    aws = "aws"
+  }
+
   cluster_name           = "${local.cluster_name}"
   aws_subnet_ids         = ["${module.dcos.infrastructure.vpc.subnet_ids}"]
   aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}"]
