@@ -2,6 +2,8 @@
 
 🚨Work in progress!🚨
 
+> The code in this repository isn't (yet) compatible with Terraform 0.12.  You'll need to use 0.11.x until it's been updated.
+
 The [Terraform](https://www.terraform.io) code and scripts in this repository install and configure [DC/OS](https://dcos.io) on a 'typical' [OpenStack](https://openstack.org) deployment.  Typical in this case means:
 
 * Per-tenant networking, with an external provider network that's used to provide ingress / egress Internet connectivity;
