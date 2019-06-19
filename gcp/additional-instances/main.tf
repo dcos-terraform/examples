@@ -31,7 +31,7 @@ module "dcos" {
   bootstrap_machine_type = "n1-standard-4"
 
   dcos_variant              = "ee"
-  dcos_version              = "1.12.3"
+  dcos_version              = "1.13.1"
   dcos_license_key_contents = "${file("~/license.txt")}"
 
   # provide a SHA512 hashed password, here "deleteme"
@@ -49,13 +49,17 @@ module "addinst" {
   source  = "dcos-terraform/private-agents/gcp"
   version = "~> 0.2.0"
 
+  providers = {
+    google = "google"
+  }
+
   cluster_name                  = "${local.cluster_name}"
   hostname_format               = "%[3]s-addinstpriv%[1]d-%[2]s"
   private_agent_subnetwork_name = "${module.dcos.infrastructure.private_agents.subnetwork_name}"
   ssh_user                      = "${module.dcos.infrastructure.private_agents.os_user}"
   machine_type                  = "n1-standard-8"
   disk_size                     = 240
-  dcos_version                  = "1.12.3"
+  dcos_version                  = "1.13.1"
   image                         = "centos-7"
   disk_type                     = "pd-ssd"
   public_ssh_key                = "~/.ssh/id_rsa.pub"

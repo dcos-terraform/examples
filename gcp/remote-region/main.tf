@@ -1,0 +1,216 @@
+provider "google" {
+  version = "~> 2.0"
+  region  = "us-west1"
+  alias   = "master"
+}
+
+provider "google" {
+  version = "~> 2.0"
+  region  = "us-east1"
+  alias   = "us-east1"
+}
+
+provider "google" {
+  version = "~> 2.0"
+  region  = "us-east4"
+  alias   = "us-east4"
+}
+
+data "http" "whatismyip" {
+  url = "http://whatismyip.akamai.com/"
+}
+
+// lets define variables which are shared between all regions
+locals {
+  ssh_public_key_file       = "~/.ssh/id_rsa.pub"
+  cluster_name              = "rtest-dcos-ee-demo"
+  dcos_license_key_contents = "${file("~/license.txt")}"
+  dcos_instance_os          = "centos_7"
+  dcos_variant              = "ee"
+  dcos_version              = "1.13.1"
+
+  region_networks = {
+    // dont use 172.17/26 as its used by docker.
+    "master"   = "172.16.0.0/16" // this is the default
+    "us-west1" = "10.65.0.0/16"  // default agent network
+    "us-east1" = "10.66.0.0/16"
+    "us-east4" = "10.67.0.0/16"
+  }
+
+  allowed_internal_networks = ["${values(local.region_networks)}"]
+}
+
+############################################################
+# main region holding masters
+############################################################
+module "dcos" {
+  source  = "dcos-terraform/dcos/gcp"
+  version = "~> 0.2.0"
+
+  providers = {
+    google = "google.master"
+  }
+
+  subnet_range       = "${local.region_networks["master"]}"
+  num_masters        = 1
+  num_private_agents = 1
+  num_public_agents  = 1
+
+  cluster_name        = "${local.cluster_name}"
+  ssh_public_key_file = "${local.ssh_public_key_file}"
+  admin_ips           = ["${data.http.whatismyip.body}/32"]
+
+  dcos_instance_os       = "${local.dcos_instance_os}"
+  bootstrap_machine_type = "n1-standard-4"
+
+  // accepted_internal_networks is holding a list of internal use networks.
+  accepted_internal_networks = "${local.allowed_internal_networks}"
+
+  dcos_variant              = "${local.dcos_variant}"
+  dcos_version              = "${local.dcos_version}"
+  dcos_license_key_contents = "${local.dcos_license_key_contents}"
+
+  # provide a SHA512 hashed password, here "deleteme"
+  dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
+  dcos_superuser_username      = "demo-super"
+
+  ansible_additional_config = <<EOF
+foo: bar
+bar: baz
+EOF
+
+  # add additional agents to install run
+  additional_private_agent_ips = ["${concat(module.dcos-use1.private_agents.private_ips,module.dcos-use4.private_agents.private_ips)}"]
+}
+
+############################################################
+# us-east1 region having agents
+############################################################
+module "dcos-use1" {
+  source  = "dcos-terraform/infrastructure/gcp"
+  version = "~> 0.2.0"
+
+  providers = {
+    google = "google.us-east1"
+  }
+
+  admin_ips   = ["${data.http.whatismyip.body}/32"]
+  name_prefix = "use1"
+
+  cluster_name = "${local.cluster_name}"
+
+  num_bootstrap      = 0
+  num_masters        = 0
+  num_private_agents = 1
+  num_public_agents  = 0
+
+  forwarding_rule_disable_masters       = true
+  forwarding_rule_disable_public_agents = true
+
+  // accepted_internal_networks is holding a list of internal use networks.
+  accepted_internal_networks = "${local.allowed_internal_networks}"
+
+  infra_dcos_instance_os    = "${local.dcos_instance_os}"
+  infra_public_ssh_key_path = "${local.ssh_public_key_file}"
+  agent_cidr_range          = "${local.region_networks["us-east1"]}"
+}
+
+resource "google_compute_network_peering" "master-use1" {
+  name         = "${local.cluster_name}-peering-master-use1"
+  network      = "${module.dcos.infrastructure.network_self_link}"
+  peer_network = "${module.dcos-use1.network_self_link}"
+}
+
+resource "google_compute_network_peering" "use1-master" {
+  name         = "${local.cluster_name}-peering-use1-master"
+  network      = "${module.dcos-use1.network_self_link}"
+  peer_network = "${module.dcos.infrastructure.network_self_link}"
+
+  depends_on = ["null_resource.master-use1-state-check"]
+}
+
+resource "null_resource" "master-use1-state-check" {
+  provisioner "local-exec" {
+    command = "echo ${google_compute_network_peering.master-use1.state}"
+  }
+}
+
+resource "null_resource" "use1-master-state-check" {
+  provisioner "local-exec" {
+    command = "echo ${google_compute_network_peering.use1-master.state}"
+  }
+}
+
+# module "vpc-connection-master-use1" {
+#   source  = "dcos-terraform/vpc-peering/gcp"
+#   version = "~> 0.2.0"
+#
+#   providers = {
+#     "aws.local"  = "google.us-west1"
+#     "aws.remote" = "google.us-east1"
+#   }
+#
+#   local_vpc_id        = "${module.dcos.infrastructure.vpc_id}"
+#   local_subnet_range  = "${local.region_networks["master"]}"
+#   remote_vpc_id       = "${module.dcos-usw2.vpc.id}"
+#   remote_subnet_range = "${local.region_networks["us-east1"]}"
+# }
+
+############################################################
+# us-east4 region having agents
+############################################################
+module "dcos-use4" {
+  source  = "dcos-terraform/infrastructure/gcp"
+  version = "~> 0.2.0"
+
+  providers = {
+    google = "google.us-east4"
+  }
+
+  admin_ips   = ["${data.http.whatismyip.body}/32"]
+  name_prefix = "use4"
+
+  cluster_name = "${local.cluster_name}"
+
+  num_bootstrap      = 0
+  num_masters        = 0
+  num_private_agents = 1
+  num_public_agents  = 0
+
+  forwarding_rule_disable_masters       = true
+  forwarding_rule_disable_public_agents = true
+
+  // accepted_internal_networks is holding a list of internal use networks.
+  accepted_internal_networks = "${local.allowed_internal_networks}"
+
+  infra_dcos_instance_os    = "${local.dcos_instance_os}"
+  infra_public_ssh_key_path = "${local.ssh_public_key_file}"
+  agent_cidr_range          = "${local.region_networks["us-east4"]}"
+}
+
+resource "google_compute_network_peering" "master-use4" {
+  name         = "${local.cluster_name}-peering-master-use4"
+  network      = "${module.dcos.infrastructure.network_self_link}"
+  peer_network = "${module.dcos-use4.network_self_link}"
+
+  depends_on = ["null_resource.use1-master-state-check"]
+}
+
+resource "null_resource" "master-use4-state-check" {
+  provisioner "local-exec" {
+    command = "echo ${google_compute_network_peering.master-use4.state}"
+  }
+}
+
+resource "google_compute_network_peering" "use4-master" {
+  name         = "${local.cluster_name}-peering-use4-master"
+  network      = "${module.dcos-use4.network_self_link}"
+  peer_network = "${module.dcos.infrastructure.network_self_link}"
+
+  depends_on = ["null_resource.master-use4-state-check"]
+}
+
+output "masters_dns_name" {
+  description = "This is the load balancer address to access the DC/OS UI"
+  value       = "${module.dcos.masters-loadbalancer}"
+}

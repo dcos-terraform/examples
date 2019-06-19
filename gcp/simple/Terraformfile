@@ -1,36 +1,12 @@
 {
-  "dcos-terraform/dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-masters.git?ref=release/v0.2"
-  },
   "dcos-terraform/dcos/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-public-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/private-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-private-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/vpc/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-vpc.git?ref=release/v0.2"
-  },
-  "dcos-terraform/security-groups/aws": {
-      "source": "git::https://github.com/dcos-terraform/terraform-aws-security-groups.git?ref=release/v0.2"
   },
   "dcos-terraform/network/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-network.git?ref=release/v0.2"
   },
-  "dcos-terraform/vnet/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-vnet.git?ref=release/v0.2"
-  },
   "dcos-terraform/masters/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-masters.git?ref=release/v0.2"
-  },
-  "dcos-terraform/masters/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-masters.git?ref=release/v0.2"
   },
   "dcos-terraform/private-agents/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-private-agents.git?ref=release/v0.2"
@@ -41,68 +17,11 @@
   "dcos-terraform/bootstrap/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-bootstrap.git?ref=release/v0.2"
   },
-  "dcos-terraform/bootstrap/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-bootstrap.git?ref=release/v0.2"
-  },
-  "dcos-terraform/private-agents/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-private-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/public-agents/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-public-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/dcos/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/bootstrap/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-bootstrap.git?ref=release/v0.2"
-  },
-  "dcos-terraform/gcp-tested-oses/template": {
-    "source": "git::https://github.com/dcos-terraform/terraform-template-gcp-tested-oses.git?ref=release/v0.2"
-  },
   "dcos-terraform/instance/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-instance.git?ref=release/v0.2"
   },
-  "dcos-terraform/iam/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-iam.git?ref=release/v0.2"
-  },
-  "dcos-terraform/instance/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-instance.git?ref=release/v0.2"
-  },
-  "dcos-terraform/tested-oses/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-tested-oses.git?ref=release/v0.2"
-  },
-  "dcos-terraform/elb/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb.git?ref=release/v0.2"
-  },
-  "dcos-terraform/elb-masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-masters.git?ref=release/v0.2"
-  },
-  "dcos-terraform/elb-masters-internal/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-masters-internal.git?ref=release/v0.2"
-  },
-  "dcos-terraform/elb-public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-public-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/elb-dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/infrastructure/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-infrastructure.git?ref=release/v0.2"
-  },
   "dcos-terraform/dcos-core/template": {
-    "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=release/v0.2"
-  },
-  "dcos-terraform/dcos-install-bootstrap-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-bootstrap-remote-exec.git?ref=release/v0.2"
-  },
-  "dcos-terraform/dcos-install-public-agents-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-public-agents-remote-exec.git?ref=release/v0.2"
-  },
-  "dcos-terraform/dcos-install-private-agents-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-private-agents-remote-exec.git?ref=release/v0.2"
-  },
-  "dcos-terraform/dcos-install-masters-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-masters-remote-exec.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-firewall/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-firewall.git?ref=release/v0.2"
@@ -114,25 +33,7 @@
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-infrastructure.git?ref=release/v0.2"
   },
   "dcos-terraform/dcos-install-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=release/v0.2"
-  },
-  "dcos-terraform/infrastructure/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-infrastructure.git?ref=release/v0.2"
-  },
-  "dcos-terraform/instance/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-instance.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb.git?ref=release/v0.2"
-  },
-  "dcos-terraform/nsg/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-nsg.git?ref=release/v0.2"
-  },
-  "dcos-terraform/azurerm-tested-oses/template": {
-    "source": "git::https://github.com/dcos-terraform/terraform-template-azurerm-tested-oses.git?ref=release/v0.2"
-  },
-  "dcos-terraform/remote-connection-route/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-remote-connection-route.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-forwarding-rule/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule.git?ref=release/v0.2"
@@ -146,61 +47,13 @@
   "dcos-terraform/compute-forwarding-rule-dcos/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-dcos.git?ref=release/v0.2"
   },
-  "dcos-terraform/lb-masters/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-masters.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-public-agents/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-public-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-masters-internal/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-masters-internal.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-dcos/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/route53-elb/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-elb.git?ref=release/v0.2"
-  },
-  "dcos-terraform/route53-instances/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-instances.git?ref=release/v0.2"
-  },
-  "dcos-terraform/route53-zone/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-zone.git?ref=release/v0.2"
-  },
-  "dcos-terraform/tested-oses/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-tested-oses.git?ref=release/v0.2"
-  },
   "dcos-terraform/dcos-ansible-bridge/localfile": {
     "source": "git::https://github.com/dcos-terraform/terraform-localfile-dcos-ansible-bridge.git?ref=release/v0.2"
   },
   "dcos-terraform/tested-oses/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-tested-oses.git?ref=release/v0.2"
   },
-  "dcos-terraform/volumes-dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-volumes-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-masters.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-masters-internal/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-masters-internal.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-public-agents.git?ref=release/v0.2"
-  },
-  "dcos-terraform/lb-dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-dcos.git?ref=release/v0.2"
-  },
-  "dcos-terraform/vpc-peering/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-vpc-peering.git?ref=release/v0.2"
-  },
-  "dcos-terraform/remote-region/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-remote-region.git?ref=release/v0.2"
-  },
   "dcos-terraform/dcos-install-remote-exec-ansible/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
   }
 }
