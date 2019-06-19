@@ -1,5 +1,6 @@
 provider "google" {
   version = "~> 2.0"
+  region  = "us-west1"
 }
 
 # Used to determine your public IP for forwarding rules
@@ -23,9 +24,9 @@ module "dcos" {
   ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
-  num_masters        = "1"
-  num_private_agents = "2"
-  num_public_agents  = "1"
+  num_masters        = 1
+  num_private_agents = 2
+  num_public_agents  = 1
 
   dcos_instance_os       = "centos_7"
   bootstrap_machine_type = "n1-standard-4"
