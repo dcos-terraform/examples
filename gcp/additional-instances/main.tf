@@ -10,7 +10,7 @@ data "http" "whatismyip" {
 
 locals {
   ssh_public_key_file       = "~/.ssh/id_rsa.pub"
-  cluster_name              = "gpuinst-dcos-ee-demo"
+  cluster_name              = "addinst-dcos-ee-demo"
   dcos_license_key_contents = "${file("~/license.txt")}"
   dcos_instance_os          = "centos_7"
   dcos_variant              = "ee"
