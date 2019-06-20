@@ -1,57 +1,57 @@
 {
   "dcos-terraform/dcos/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-dcos.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-dcos.git?ref=support/0.2.x"
   },
   "dcos-terraform/network/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-network.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-network.git?ref=support/0.2.x"
   },
   "dcos-terraform/masters/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-masters.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-masters.git?ref=support/0.2.x"
   },
   "dcos-terraform/private-agents/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-private-agents.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-private-agents.git?ref=support/0.2.x"
   },
   "dcos-terraform/public-agents/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-public-agents.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-public-agents.git?ref=support/0.2.x"
   },
   "dcos-terraform/bootstrap/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-bootstrap.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-bootstrap.git?ref=support/0.2.x"
   },
   "dcos-terraform/instance/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-instance.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-instance.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-core/template": {
     "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-firewall/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-firewall.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-firewall.git?ref=support/0.2.x"
   },
   "dcos-terraform/backend-service/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-backend-service.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-backend-service.git?ref=support/0.2.x"
   },
   "dcos-terraform/infrastructure/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-infrastructure.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-infrastructure.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-install-remote-exec/null": {
     "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-forwarding-rule/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-forwarding-rule-masters/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-masters.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-masters.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-forwarding-rule-public-agents/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-public-agents.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-public-agents.git?ref=support/0.2.x"
   },
   "dcos-terraform/compute-forwarding-rule-dcos/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-dcos.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-compute-forwarding-rule-dcos.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-ansible-bridge/localfile": {
-    "source": "git::https://github.com/dcos-terraform/terraform-localfile-dcos-ansible-bridge.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-localfile-dcos-ansible-bridge.git?ref=support/0.2.x"
   },
   "dcos-terraform/tested-oses/gcp": {
-    "source": "git::https://github.com/dcos-terraform/terraform-gcp-tested-oses.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-tested-oses.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-install-remote-exec-ansible/null": {
     "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
