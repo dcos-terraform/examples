@@ -6,6 +6,7 @@ For production usage make sure you understand how terraform works and stores its
 ## Examples
 
 - AWS
+  - [Windows-agent](aws/windows-agent) - An  example with  windows agent support
   - [Simple](aws/simple/) - An example for a simple setup of DC/OS.
   - [Existing VPC](aws/existing-vpc/) - An example using an already existing VPC.
   - [Additional Instances](aws/additional-instances/) - An example for provisioning extra agent nodes with another disk configuration.

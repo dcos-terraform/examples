@@ -1,136 +1,95 @@
-provider "aws" {}
+locals {
+  cluster_name="development"
+  num_masters                  = "1"
+  num_private_agents           = "1"
+  num_public_agents            = "1"
+  num_winagent                 = "2"
+  dcos_version                 = "1.13.0"
+  dcos_instance_os             = "centos_7.5"
+  bootstrap_instance_type      = "r5.large"
+  masters_instance_type        = "r5.xlarge"
+  private_agents_instance_type = "r5.large"
+  public_agents_instance_type  = "r5.large"
+  ssh_public_key_file          = "~/.ssh/ep3.pub"
+  ssh_private_key_file         = "~/.ssh/ep3"
+  admin_ips                    = ["${data.http.whatismyip.body}/32", "85.223.209.0/24", "87.245.220.0/26", "85.223.141.72/29", "89.162.139.0/27", "91.120.48.0/24", "80.92.226.132/30", "195.56.119.208/28", "195.56.109.192/28", "109.86.106.122/32"]
+  owner                        = "John Dow"
+  expiration                   = "20h"
+}
+
+provider "aws" {
+  # Change your default region here
+  region = "us-west-2"
+}
+module "dcos" {
+  source  = "dcos-terraform/dcos/aws"
+  version = "~> 0.2.0"
+
+  cluster_name        = "${local.cluster_name}"
+  ssh_public_key_file = "${local.ssh_public_key_file}"
+  admin_ips           = "${local.admin_ips}"
+  num_masters        = "${local.num_masters}"
+  num_private_agents = "${local.num_private_agents}"
+  num_public_agents  = "${local.num_public_agents}"
+
+  dcos_version = "${local.dcos_version}"
+
+  dcos_instance_os    = "${local.dcos_instance_os}"
+  bootstrap_instance_type = "${local.bootstrap_instance_type}"
+  masters_instance_type  = "${local.masters_instance_type}"
+  private_agents_instance_type = "${local.private_agents_instance_type}"
+  public_agents_instance_type = "${local.public_agents_instance_type}"
+
+  providers = {
+    aws = "aws"
+  }
+  tags = {
+    owner = "${local.owner}"
+    expiration = "${local.expiration}"
+  }
+  # Enterprise users uncomment this section and comment out below
+  # dcos_variant              = "ee"
+  # dcos_license_key_contents = "${file("./license.txt")}"
+  # Make sure to set your credentials if you do not want the default EE
+  # dcos_superuser_username          = "superuser-name"
+  # dcos_superuser_password_hash = "${file("./dcos_superuser_password_hash.sha512")}"
+
+  # Default is DC/OS
+  dcos_variant = "open"
+}
+
+module "windows-agent" {
+  source = "git::https://github.com/alekspv/terraform-aws-windows-instance.git?ref=support/0.2.x"
+  num_winagent = "${local.num_winagent}"
+  admin_ips = "${local.admin_ips}"
+  vpc_id = "${module.dcos.infrastructure.vpc.id}"
+  subnet_id = "${module.dcos.infrastructure.vpc.subnet_ids}"
+  cluster_name = "${local.cluster_name}"
+  expiration = "${local.expiration}"
+  owner = "${local.owner}"
+  aws_key_name = "${module.dcos.infrastructure.aws_key_name}"
+  security_group_admin = "${module.dcos.infrastructure.security_groups.admin}"
+  security_group_internal = "${module.dcos.infrastructure.security_groups.internal}"
+  bootstrap_private_ip = "${module.dcos.infrastructure.bootstrap.private_ip}"
+  bootstrap_public_ip = "${module.dcos.infrastructure.bootstrap.public_ip}"
+  bootstrap_os_user = "${module.dcos.infrastructure.bootstrap.os_user}"
+  ssh_private_key_file = "${local.ssh_private_key_file}"
+  masters_private_ips = "${module.dcos.infrastructure.masters.private_ips}"
+}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
   url = "http://whatismyip.akamai.com/"
 }
 
-locals {
-  cluster_name = "windows"
+output "masters-ips" {
+  value = "${module.dcos.masters-ips}"
 }
 
-module "dcos" {
-  source  = "dcos-terraform/dcos/aws"
-  version = "~> 0.2.0"
-
-  providers = {
-    aws = "aws"
-  }
-
-  cluster_name        = "${local.cluster_name}"
-  ssh_public_key_file = "~/.ssh/id_rsa.pub"
-  admin_ips           = ["${data.http.whatismyip.body}/32"]
-
-  num_masters        = "1"
-  num_private_agents = "0"
-  num_public_agents  = "1"
-
-  dcos_variant              = "ee"
-  dcos_version              = "1.13.0"
-  dcos_license_key_contents = "${file("~/license.txt")}"
-
-  ansible_bundled_container = "mesosphere/dcos-ansible-bundle:latest"
-
-  # this should be additional_windows_agent_ips. And we need a way to specify
-  # their passwords
-  # additional_private_agent_ips = ["${module.windowsagent.private_ips}"]
+output "cluster-address" {
+  value = "${module.dcos.masters-loadbalancer}"
 }
 
-module "windowsagent" {
-  source  = "dcos-terraform/windows-instance/aws"
-  version = "~> 0.2.0"
-
-  cluster_name           = "${local.cluster_name}"
-  hostname_format        = "%[3]s-winagent%[1]d-%[2]s"
-  aws_subnet_ids         = ["${module.dcos.infrastructure.vpc.subnet_ids}"]
-  aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}"]
-  aws_key_name           = "${module.dcos.infrastructure.aws_key_name}"
-
-  # aws_extra_volumes = [
-  #   {
-  #     size        = "100"
-  #     type        = "gp2"
-  #     iops        = "3000"
-  #     device_name = "/dev/xvdi"
-  #   },
-  #   {
-  #     size        = "1000"
-  #     type        = ""          # Use AWS default.
-  #     iops        = "0"         # Use AWS default.
-  #     device_name = "/dev/xvdj"
-  #   },
-  # ]
-
-  num = "1"
-}
-
-resource "local_file" "ansible_inventory" {
-  filename = "./inventory"
-
-  content = <<EOF
-[bootstraps]
-${join("\n", module.dcos.infrastructure.bootstrap.public_ip)}
-
-[masters]
-${join("\n", module.dcos.infrastructure.masters.public_ips)}
-
-[agents_private]
-${join("\n", module.dcos.infrastructure.private_agents.public_ips)}
-
-[agents_windows]
-ansible_connection=winrm
-ansible_winrm_transport
-${formatlist("%s ansible_password=%s", module.windowsagent.public_ips, module.windowsagent.public_ips)}
-
-[agents_public]
-${join("\n", module.dcos.infrastructure.public_agents.public_ips)}
-
-[bootstraps:vars]
-node_type=bootstrap
-
-[masters:vars]
-node_type=master
-dcos_legacy_node_type_name=master
-
-[agents_private:vars]
-node_type=agent
-dcos_legacy_node_type_name=slave
-
-[agents_public:vars]
-node_type=agent_public
-dcos_legacy_node_type_name=slave_public
-
-[agents:children]
-agents_private
-agents_public
-agents_windows
-
-[dcos:children]
-bootstraps
-masters
-agents
-agents_public
-agents_windows
-
-EOF
-}
-
-resource "local_file" "vars_file" {
-  filename = "./dcos.yml"
-
-  content = <<EOF
----
-${local.ansible_additional_config}
-
-# Core Module vars. dcos['config'] needed for some of our Roles.
-dcos:
-  config:
-  ${indent(4, module.dcos.config)}
-
-EOF
-}
-
-output "masters_dns_name" {
-  description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${module.dcos.masters-loadbalancer}"
+output "public-agents-loadbalancer" {
+  value = "${module.dcos.public-agents-loadbalancer}"
 }
