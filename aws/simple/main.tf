@@ -21,15 +21,15 @@ module "dcos" {
   ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
-  num_masters        = "1"
-  num_private_agents = "2"
-  num_public_agents  = "1"
+  num_masters        = 1
+  num_private_agents = 2
+  num_public_agents  = 1
 
   dcos_instance_os        = "centos_7.5"
   bootstrap_instance_type = "m4.xlarge"
 
   dcos_variant              = "ee"
-  dcos_version              = "1.12.3"
+  dcos_version              = "1.13.1"
   dcos_license_key_contents = "${file("~/license.txt")}"
 
   # provide a SHA512 hashed password, here "deleteme"

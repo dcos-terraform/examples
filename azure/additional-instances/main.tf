@@ -1,7 +1,4 @@
-provider "google" {
-  version = "~> 2.0"
-  region  = "us-west1"
-}
+provider "azure" {}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
@@ -12,18 +9,21 @@ locals {
   ssh_public_key_file       = "~/.ssh/id_rsa.pub"
   cluster_name              = "addinst-dcos-ee-demo"
   dcos_license_key_contents = "${file("~/license.txt")}"
-  dcos_instance_os          = "centos_7"
+  dcos_instance_os          = "centos_7.6"
   dcos_variant              = "ee"
   dcos_version              = "1.13.1"
+  location                  = "West US"
 }
 
 module "dcos" {
-  source  = "dcos-terraform/dcos/gcp"
+  source  = "dcos-terraform/dcos/azurerm"
   version = "~> 0.2.0"
 
   providers = {
-    google = "google"
+    azure = "azure"
   }
+
+  location = "${local.location}"
 
   cluster_name        = "${local.cluster_name}"
   ssh_public_key_file = "${local.ssh_public_key_file}"
@@ -33,8 +33,7 @@ module "dcos" {
   num_private_agents = 1
   num_public_agents  = 1
 
-  dcos_instance_os       = "${local.dcos_instance_os}"
-  bootstrap_machine_type = "n1-standard-4"
+  dcos_instance_os = "${local.dcos_instance_os}"
 
   dcos_variant              = "${local.dcos_variant}"
   dcos_version              = "${local.dcos_version}"
@@ -52,23 +51,25 @@ EOF
 }
 
 module "addinst" {
-  source  = "dcos-terraform/private-agents/gcp"
+  source  = "dcos-terraform/private-agents/azurerm"
   version = "~> 0.2.0"
 
   providers = {
-    google = "google"
+    azure = "azure"
   }
+
+  location = "${local.location}"
 
   dcos_instance_os = "${local.dcos_instance_os}"
   public_ssh_key   = "${local.ssh_public_key_file}"
-  machine_type     = "n1-standard-8"
+  vm_size          = "Standard_D8s_v3"
 
-  cluster_name                  = "${local.cluster_name}"
-  hostname_format               = "%[3]s-addinstpriv%[1]d-%[2]s"
-  private_agent_subnetwork_name = "${module.dcos.infrastructure.private_agents.subnetwork_name}"
-  ssh_user                      = "${module.dcos.infrastructure.private_agents.os_user}"
-  zone_list                     = "${module.dcos.infrastructure.private_agents.zone_list}"
-  scheduling_preemptible        = true
+  cluster_name              = "${local.cluster_name}"
+  hostname_format           = "addinstpriv-%[1]d-%[2]s"
+  resource_group_name       = "${module.dcos.infrastructure.resource_group_name}"
+  subnet_id                 = "${module.dcos.infrastructure.subnet_id}"
+  network_security_group_id = "${module.dcos.infrastructure.private_agents.nsg_id}"
+  admin_username            = "${module.dcos.infrastructure.private_agents.admin_username}"
 
   num_private_agents = 2
 }
