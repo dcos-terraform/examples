@@ -1,8 +1,8 @@
 {
   "dcos-terraform/windows-instance/aws": {
-    "source": "https://github.com/dcos-terraform/terraform-aws-windows-instance.git?ref=feature/windows-support"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-windows-instance.git?ref=feature/windows-support"
   },
   "dcos-terraform/instance/aws": {
-    "source": "https://github.com/dcos-terraform/terraform-aws-instance.git?ref=feature/windows-support"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-instance.git?ref=feature/windows-support"
   }
 }
