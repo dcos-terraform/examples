@@ -19,8 +19,6 @@ locals {
     "West US 2" = "172.13.0.0/16"
     "East US"   = "172.14.0.0/16"
   }
-
-  allowed_internal_networks = ["${values(local.region_networks)}"]
 }
 
 ############################################################
@@ -46,11 +44,7 @@ module "dcos" {
   num_private_agents = 1
   num_public_agents  = 1
 
-  dcos_instance_os = "${local.dcos_instance_os}"
-
-  // accepted_internal_networks is holding a list of internal use networks.
-  accepted_internal_networks = "${local.allowed_internal_networks}"
-
+  dcos_instance_os          = "${local.dcos_instance_os}"
   dcos_variant              = "${local.dcos_variant}"
   dcos_version              = "${local.dcos_version}"
   dcos_license_key_contents = "${local.dcos_license_key_contents}"
@@ -88,10 +82,8 @@ module "dcos-wus2" {
   num_private_agents = 1
   num_public_agents  = 0
 
-  // accepted_internal_networks is holding a list of internal use networks.
-  accepted_internal_networks = "${local.allowed_internal_networks}"
-  infra_dcos_instance_os     = "${local.dcos_instance_os}"
-  ssh_public_key_file        = "${local.ssh_public_key_file}"
+  infra_dcos_instance_os = "${local.dcos_instance_os}"
+  ssh_public_key_file    = "${local.ssh_public_key_file}"
 }
 
 resource "azurerm_virtual_network_peering" "master-wus2" {
@@ -139,10 +131,8 @@ module "dcos-eus" {
   num_private_agents = 1
   num_public_agents  = 0
 
-  // accepted_internal_networks is holding a list of internal use networks.
-  accepted_internal_networks = "${local.allowed_internal_networks}"
-  infra_dcos_instance_os     = "${local.dcos_instance_os}"
-  ssh_public_key_file        = "${local.ssh_public_key_file}"
+  infra_dcos_instance_os = "${local.dcos_instance_os}"
+  ssh_public_key_file    = "${local.ssh_public_key_file}"
 }
 
 resource "azurerm_virtual_network_peering" "master-eus" {
