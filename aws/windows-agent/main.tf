@@ -54,7 +54,7 @@ module "winagent" {
   cluster_name           = "${local.cluster_name}"
   hostname_format        = "%[3]s-winagent%[1]d-%[2]s"
   aws_subnet_ids         = ["${module.dcos.infrastructure.vpc.subnet_ids}"]
-  aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}"]
+  aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}", "${module.dcos.infrastructure.security_groups.admin}"]
   aws_key_name           = "${module.dcos.infrastructure.aws_key_name}"
   aws_instance_type      = "m5.xlarge"
 
