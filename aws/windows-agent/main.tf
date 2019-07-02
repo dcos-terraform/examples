@@ -30,9 +30,8 @@ module "dcos" {
   dcos_instance_os        = "centos_7.5"
   bootstrap_instance_type = "m5.xlarge"
 
-  dcos_variant              = "ee"
+  dcos_variant              = "open"
   dcos_version              = "1.13.0"
-  dcos_license_key_contents = "${file("~/license.txt")}"
   ansible_bundled_container = "sebbrandt87/dcos-ansible-bundle:windows-support"
 
   # provide a SHA512 hashed password, here "deleteme"
