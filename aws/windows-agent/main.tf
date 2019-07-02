@@ -27,7 +27,9 @@ module "dcos" {
   num_private_agents = "1"
   num_public_agents  = "1"
 
-  dcos_instance_os          = "centos_7.5"
+  dcos_instance_os        = "centos_7.5"
+  bootstrap_instance_type = "m5.xlarge"
+
   dcos_variant              = "ee"
   dcos_version              = "1.13.0"
   dcos_license_key_contents = "${file("~/license.txt")}"
