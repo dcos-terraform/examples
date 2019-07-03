@@ -11,7 +11,7 @@ locals {
   dcos_license_key_contents = "${file("~/license.txt")}"
   dcos_instance_os          = "centos_7.6"
   dcos_variant              = "ee"
-  dcos_version              = "1.13.1"
+  dcos_version              = "1.13.2"
   location                  = "West US"
 }
 
