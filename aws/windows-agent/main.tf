@@ -30,7 +30,10 @@ module "dcos" {
   dcos_instance_os        = "centos_7.5"
   bootstrap_instance_type = "m5.xlarge"
 
-  dcos_variant              = "open"
+  # dcos_variant              = "ee"
+  # dcos_license_key_contents = "${file("~/license.txt")}"
+  dcos_variant = "open"
+
   dcos_version              = "1.13.0"
   ansible_bundled_container = "sebbrandt87/dcos-ansible-bundle:windows-support"
 
@@ -56,7 +59,7 @@ module "winagent" {
   aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}", "${module.dcos.infrastructure.security_groups.admin}"]
   aws_key_name           = "${module.dcos.infrastructure.aws_key_name}"
   aws_instance_type      = "m5.xlarge"
-  
+
   # provide the number of windows agents that should be provisioned.
   num = "1"
 }
@@ -64,4 +67,8 @@ module "winagent" {
 output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
   value       = "${module.dcos.masters-loadbalancer}"
+}
+
+output "windows_passwords" {
+  value = "${module.winagent.windows_passwords}"
 }
