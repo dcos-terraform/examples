@@ -56,7 +56,8 @@ module "winagent" {
   aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}", "${module.dcos.infrastructure.security_groups.admin}"]
   aws_key_name           = "${module.dcos.infrastructure.aws_key_name}"
   aws_instance_type      = "m5.xlarge"
-
+  
+  # provide the number of windows agents that should be provisioned.
   num = "1"
 }
 
