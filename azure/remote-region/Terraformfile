@@ -1,56 +1,57 @@
+{
   "dcos-terraform/vnet/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-vnet.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-vnet.git?ref=support/0.2.x"
   },
   "dcos-terraform/masters/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-masters.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-masters.git?ref=support/0.2.x"
   },
   "dcos-terraform/bootstrap/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-bootstrap.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-bootstrap.git?ref=support/0.2.x"
   },
   "dcos-terraform/private-agents/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-private-agents.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-private-agents.git?ref=support/0.2.x"
   },
   "dcos-terraform/public-agents/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-public-agents.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-public-agents.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-dcos.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-dcos.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-core/template": {
-    "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-install-remote-exec/null": {
     "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=support/0.2.x"
   },
   "dcos-terraform/infrastructure/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-infrastructure.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-infrastructure.git?ref=support/0.2.x"
   },
   "dcos-terraform/instance/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-instance.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-instance.git?ref=support/0.2.x"
   },
   "dcos-terraform/lb/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb.git?ref=support/0.2.x"
   },
   "dcos-terraform/nsg/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-nsg.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-nsg.git?ref=support/0.2.x"
   },
   "dcos-terraform/azurerm-tested-oses/template": {
-    "source": "git::https://github.com/dcos-terraform/terraform-template-azurerm-tested-oses.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-template-azurerm-tested-oses.git?ref=support/0.2.x"
   },
   "dcos-terraform/lb-masters/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-masters.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-masters.git?ref=support/0.2.x"
   },
   "dcos-terraform/lb-public-agents/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-public-agents.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-public-agents.git?ref=support/0.2.x"
   },
   "dcos-terraform/lb-masters-internal/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-masters-internal.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-masters-internal.git?ref=support/0.2.x"
   },
   "dcos-terraform/lb-dcos/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-dcos.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-lb-dcos.git?ref=support/0.2.x"
   },
   "dcos-terraform/tested-oses/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-tested-oses.git?ref=release/v0.2"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-tested-oses.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-ansible-bridge/localfile": {
     "source": "git::https://github.com/dcos-terraform/terraform-localfile-dcos-ansible-bridge.git?ref=support/0.2.x"
