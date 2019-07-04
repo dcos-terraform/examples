@@ -4,8 +4,9 @@ This is an early example how to use and integrate windows agents. If you're not
 an active developer of this project we do not suggest to use it.
 
 ## Terraform usage
-
-You need our Terraformfile based terraform 0.11 fork: https://github.com/fatz/terraform/releases/tag/v0.11.14-mesosphere
+_____________
+**You need our Terraformfile based terraform 0.11 fork: https://github.com/fatz/terraform/releases/tag/v0.11.14-mesosphere**
+_____________
 
 ```
 terraform init -upgrade
