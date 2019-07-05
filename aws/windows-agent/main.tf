@@ -11,10 +11,6 @@ locals {
   cluster_name = "generic-dcos-ee-demo"
 }
 
-provider "aws" {
-  # Change your default region here
-  region = "us-west-2"
-}
 module "dcos" {
   source  = "dcos-terraform/dcos/aws"
   version = "~> 0.2.0"
