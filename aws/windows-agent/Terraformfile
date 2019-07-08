@@ -27,6 +27,6 @@
     "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=feature/windows-support"
   },
   "dcos-terraform/dcos-install-remote-exec-ansible/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=feature/windows-support"
+    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
   }
 }
