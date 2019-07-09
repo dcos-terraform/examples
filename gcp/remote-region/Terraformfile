@@ -5,6 +5,9 @@
   "dcos-terraform/network/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-network.git?ref=support/0.2.x"
   },
+  "dcos-terraform/network-peering/gcp": {
+    "source": "git::https://github.com/dcos-terraform/terraform-gcp-network-peering?ref=support/0.2.x"
+  },
   "dcos-terraform/masters/gcp": {
     "source": "git::https://github.com/dcos-terraform/terraform-gcp-masters.git?ref=support/0.2.x"
   },

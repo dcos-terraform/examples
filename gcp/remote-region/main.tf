@@ -80,7 +80,7 @@ bar: baz
 EOF
 
   # add additional agents to install run
-  additional_private_agent_ips = ["${concat(module.dcos-use1.private_agents.private_ips,module.dcos-use4.private_agents.private_ips)}"]
+  additional_private_agent_ips = ["${concat(module.dcos-use1.private_agents.private_ips, module.dcos-use4.private_agents.private_ips)}"]
 }
 
 ############################################################
@@ -115,46 +115,21 @@ module "dcos-use1" {
   agent_cidr_range          = "${local.region_networks["us-east1"]}"
 }
 
-resource "google_compute_network_peering" "master-use1" {
-  name         = "${local.cluster_name}-peering-master-use1"
-  network      = "${module.dcos.infrastructure.network_self_link}"
-  peer_network = "${module.dcos-use1.network_self_link}"
-}
+module "vpc-connection-master-use1" {
+  source  = "dcos-terraform/network-peering/gcp"
+  version = "~> 0.2.0"
 
-resource "google_compute_network_peering" "use1-master" {
-  name         = "${local.cluster_name}-peering-use1-master"
-  network      = "${module.dcos-use1.network_self_link}"
-  peer_network = "${module.dcos.infrastructure.network_self_link}"
-
-  depends_on = ["null_resource.master-use1-state-check"]
-}
-
-resource "null_resource" "master-use1-state-check" {
-  provisioner "local-exec" {
-    command = "echo ${google_compute_network_peering.master-use1.state}"
+  providers = {
+    google.local  = "google.master"
+    google.remote = "google.us-east1"
   }
-}
 
-resource "null_resource" "use1-master-state-check" {
-  provisioner "local-exec" {
-    command = "echo ${google_compute_network_peering.use1-master.state}"
-  }
+  cluster_name             = "${local.cluster_name}"
+  local_network_name       = "master"
+  local_network_self_link  = "${module.dcos.infrastructure.network_self_link}"
+  remote_network_name      = "use1"
+  remote_network_self_link = "${module.dcos-use1.network_self_link}"
 }
-
-# module "vpc-connection-master-use1" {
-#   source  = "dcos-terraform/vpc-peering/gcp"
-#   version = "~> 0.2.0"
-#
-#   providers = {
-#     "aws.local"  = "google.us-west1"
-#     "aws.remote" = "google.us-east1"
-#   }
-#
-#   local_vpc_id        = "${module.dcos.infrastructure.vpc_id}"
-#   local_subnet_range  = "${local.region_networks["master"]}"
-#   remote_vpc_id       = "${module.dcos-usw2.vpc.id}"
-#   remote_subnet_range = "${local.region_networks["us-east1"]}"
-# }
 
 ############################################################
 # us-east4 region having agents
@@ -188,26 +163,20 @@ module "dcos-use4" {
   agent_cidr_range          = "${local.region_networks["us-east4"]}"
 }
 
-resource "google_compute_network_peering" "master-use4" {
-  name         = "${local.cluster_name}-peering-master-use4"
-  network      = "${module.dcos.infrastructure.network_self_link}"
-  peer_network = "${module.dcos-use4.network_self_link}"
+module "vpc-connection-master-use4" {
+  source  = "dcos-terraform/network-peering/gcp"
+  version = "~> 0.2.0"
 
-  depends_on = ["null_resource.use1-master-state-check"]
-}
-
-resource "null_resource" "master-use4-state-check" {
-  provisioner "local-exec" {
-    command = "echo ${google_compute_network_peering.master-use4.state}"
+  providers = {
+    google.local  = "google.master"
+    google.remote = "google.us-east4"
   }
-}
 
-resource "google_compute_network_peering" "use4-master" {
-  name         = "${local.cluster_name}-peering-use4-master"
-  network      = "${module.dcos-use4.network_self_link}"
-  peer_network = "${module.dcos.infrastructure.network_self_link}"
-
-  depends_on = ["null_resource.master-use4-state-check"]
+  cluster_name             = "${local.cluster_name}"
+  local_network_name       = "master"
+  local_network_self_link  = "${module.dcos.infrastructure.network_self_link}"
+  remote_network_name      = "use4"
+  remote_network_self_link = "${module.dcos-use4.network_self_link}"
 }
 
 output "masters_dns_name" {
