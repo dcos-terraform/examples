@@ -177,6 +177,7 @@ module "vpc-connection-master-use4" {
   local_network_self_link  = "${module.dcos.infrastructure.network_self_link}"
   remote_network_name      = "use4"
   remote_network_self_link = "${module.dcos-use4.network_self_link}"
+  wait_for_peering_id      = "${module.vpc-connection-master-use1.depends_id}"
 }
 
 output "masters_dns_name" {
