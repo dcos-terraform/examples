@@ -34,7 +34,7 @@ module "dcos-infrastructure" {
 module "dcos-install" {
   source = "dcos-terraform/dcos-install-remote-exec/null"
 
-  version = "~> 0.2.0"
+  version = "~> 0.2.2"
 
   # bootstrap
   bootstrap_ip         = "${module.dcos-infrastructure.bootstrap.public_ip}"
