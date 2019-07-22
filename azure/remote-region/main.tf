@@ -16,8 +16,8 @@ locals {
   region_networks = {
     // dont use 172.17/26 as its used by docker.
     "master"    = "172.12.0.0/16" // this is the default
-    "West US 2" = "172.13.0.0/16"
-    "East US"   = "172.14.0.0/16"
+    "West US 2" = "10.128.0.0/16"
+    "East US"   = "10.129.0.0/16"
   }
 }
 

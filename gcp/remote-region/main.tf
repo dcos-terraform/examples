@@ -33,8 +33,8 @@ locals {
     // dont use 172.17/26 as its used by docker.
     "master"   = "172.16.0.0/16" // this is the default
     "us-west1" = "10.65.0.0/16"  // default agent network
-    "us-east1" = "10.66.0.0/16"
-    "us-east4" = "10.67.0.0/16"
+    "us-east1" = "10.128.0.0/16"
+    "us-east4" = "10.129.0.0/16"
   }
 
   allowed_internal_networks = ["${values(local.region_networks)}"]
