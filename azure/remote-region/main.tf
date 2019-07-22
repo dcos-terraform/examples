@@ -86,24 +86,23 @@ module "dcos-wus2" {
   ssh_public_key_file    = "${local.ssh_public_key_file}"
 }
 
-resource "azurerm_virtual_network_peering" "master-wus2" {
-  name                         = "${local.cluster_name}-peering-master-to-wus2"
-  resource_group_name          = "${module.dcos.infrastructure.resource_group_name}"
-  virtual_network_name         = "${module.dcos.infrastructure.vnet_name}"
-  remote_virtual_network_id    = "${module.dcos-wus2.vnet_id}"
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
-}
+module "vnet-connection-master-wus2" {
+  source  = "dcos-terraform/vnet-peering/azurerm"
+  version = "~> 0.2.0"
 
-resource "azurerm_virtual_network_peering" "wus2-master" {
-  name                         = "${local.cluster_name}-peering-wus2-to-master"
-  resource_group_name          = "${module.dcos-wus2.resource_group_name}"
-  virtual_network_name         = "${module.dcos-wus2.vnet_name}"
-  remote_virtual_network_id    = "${module.dcos.infrastructure.vnet_id}"
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
+  providers = {
+    azure = "azure"
+  }
+
+  cluster_name               = "${local.cluster_name}"
+  local_region_network       = "master"
+  local_resource_group_name  = "${module.dcos.infrastructure.resource_group_name}"
+  local_vnet_name            = "${module.dcos.infrastructure.vnet_name}"
+  local_vnet_id              = "${module.dcos.infrastructure.vnet_id}"
+  remote_region_network      = "wus2"
+  remote_resource_group_name = "${module.dcos-wus2.resource_group_name}"
+  remote_vnet_name           = "${module.dcos-wus2.vnet_name}"
+  remote_vnet_id             = "${module.dcos-wus2.vnet_id}"
 }
 
 ############################################################
@@ -135,24 +134,23 @@ module "dcos-eus" {
   ssh_public_key_file    = "${local.ssh_public_key_file}"
 }
 
-resource "azurerm_virtual_network_peering" "master-eus" {
-  name                         = "${local.cluster_name}-peering-master-to-eus"
-  resource_group_name          = "${module.dcos.infrastructure.resource_group_name}"
-  virtual_network_name         = "${module.dcos.infrastructure.vnet_name}"
-  remote_virtual_network_id    = "${module.dcos-eus.vnet_id}"
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
-}
+module "vnet-connection-master-eus" {
+  source  = "dcos-terraform/vnet-peering/azurerm"
+  version = "~> 0.2.0"
 
-resource "azurerm_virtual_network_peering" "eus-master" {
-  name                         = "${local.cluster_name}-peering-eus-to-master"
-  resource_group_name          = "${module.dcos-eus.resource_group_name}"
-  virtual_network_name         = "${module.dcos-eus.vnet_name}"
-  remote_virtual_network_id    = "${module.dcos.infrastructure.vnet_id}"
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
+  providers = {
+    azure = "azure"
+  }
+
+  cluster_name               = "${local.cluster_name}"
+  local_region_network       = "master"
+  local_resource_group_name  = "${module.dcos.infrastructure.resource_group_name}"
+  local_vnet_name            = "${module.dcos.infrastructure.vnet_name}"
+  local_vnet_id              = "${module.dcos.infrastructure.vnet_id}"
+  remote_region_network      = "eus"
+  remote_resource_group_name = "${module.dcos-eus.resource_group_name}"
+  remote_vnet_name           = "${module.dcos-eus.vnet_name}"
+  remote_vnet_id             = "${module.dcos-eus.vnet_id}"
 }
 
 output "masters_dns_name" {

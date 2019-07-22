@@ -115,7 +115,7 @@ module "dcos-use1" {
   agent_cidr_range          = "${local.region_networks["us-east1"]}"
 }
 
-module "vpc-connection-master-use1" {
+module "network-connection-master-use1" {
   source  = "dcos-terraform/network-peering/gcp"
   version = "~> 0.2.0"
 
@@ -163,7 +163,7 @@ module "dcos-use4" {
   agent_cidr_range          = "${local.region_networks["us-east4"]}"
 }
 
-module "vpc-connection-master-use4" {
+module "network-connection-master-use4" {
   source  = "dcos-terraform/network-peering/gcp"
   version = "~> 0.2.0"
 
@@ -177,7 +177,7 @@ module "vpc-connection-master-use4" {
   local_network_self_link  = "${module.dcos.infrastructure.network_self_link}"
   remote_network_name      = "use4"
   remote_network_self_link = "${module.dcos-use4.network_self_link}"
-  wait_for_peering_id      = "${module.vpc-connection-master-use1.depends_id}"
+  wait_for_peering_id      = "${module.network-connection-master-use1.peering_resource_id}"
 }
 
 output "masters_dns_name" {
