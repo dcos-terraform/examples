@@ -1,32 +1,5 @@
 {
-  "dcos-terraform/dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-dcos.git?ref=feature/windows-support"
-  },
-  "dcos-terraform/instance/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-instance.git?ref=feature/windows-support"
-  },
-  "dcos-terraform/infrastructure/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-infrastructure.git?ref=remove-prereq"
-  },
-  "dcos-terraform/bootstrap/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-bootstrap.git?ref=remove-prereq"
-  },
-  "dcos-terraform/masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-masters.git?ref=remove-prereq"
-  },
-  "dcos-terraform/public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-public-agents.git?ref=remove-prereq"
-  },
-  "dcos-terraform/private-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-private-agents.git?ref=remove-prereq"
-  },
   "dcos-terraform/windows-instance/aws": {
     "source": "git::https://github.com/dcos-terraform/terraform-aws-windows-instance.git?ref=support/0.2.x"
-  },
-  "dcos-terraform/dcos-install-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=feature/windows-support"
-  },
-  "dcos-terraform/dcos-install-remote-exec-ansible/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=feature/windows-support"
   }
 }
