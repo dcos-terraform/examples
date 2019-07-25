@@ -1,5 +1,0 @@
-{
-  "dcos-terraform/windows-instance/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-windows-instance.git?ref=support/0.2.x"
-  }
-}

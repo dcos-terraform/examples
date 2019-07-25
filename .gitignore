@@ -10,3 +10,6 @@
 
 # ansible inventory
 inventory
+
+# IDE
+**/.idea/*
