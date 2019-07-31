@@ -11,7 +11,7 @@ EOF
 
 variable "dcos_version" {
   description = "DC/OS version to be used"
-  default     = "1.13.2"
+  default     = "1.13.3"
 }
 
 variable "cluster_name" {

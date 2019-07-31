@@ -11,7 +11,7 @@ locals {
   dcos_license_key_contents         = "${file("~/license.txt")}"
   dcos_instance_os                  = "centos_7.6"
   dcos_variant                      = "ee"
-  dcos_version                      = "1.13.2"
+  dcos_version                      = "1.13.3"
   location                          = "West US 2"
   avset_platform_fault_domain_count = 2
 }

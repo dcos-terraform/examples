@@ -26,7 +26,7 @@ module "dcos" {
   num_public_agents  = 1
 
   dcos_variant              = "ee"
-  dcos_version              = "1.13.2"
+  dcos_version              = "1.13.3"
   dcos_license_key_contents = "${file("~/license.txt")}"
 
   additional_private_agent_ips = ["${concat(module.gpuagent.private_ips)}"]
