@@ -1,4 +1,4 @@
-provider "azure" {}
+provider "azurerm" {}
 
 data "http" "whatismyip" {
   url = "http://whatismyip.akamai.com/"
@@ -29,7 +29,7 @@ module "dcos" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   location                          = "West US"
@@ -65,7 +65,7 @@ module "dcos-wus2" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   location                          = "West US 2"
@@ -91,7 +91,7 @@ module "vnet-connection-master-wus2" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   cluster_name               = "${local.cluster_name}"
@@ -113,7 +113,7 @@ module "dcos-eus" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   location                          = "East US"
@@ -139,7 +139,7 @@ module "vnet-connection-master-eus" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   cluster_name               = "${local.cluster_name}"

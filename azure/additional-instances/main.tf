@@ -1,4 +1,4 @@
-provider "azure" {}
+provider "azurerm" {}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
@@ -20,7 +20,7 @@ module "dcos" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   location = "${local.location}"
@@ -55,7 +55,7 @@ module "addinst" {
   version = "~> 0.2.0"
 
   providers = {
-    azure = "azure"
+    azurerm = "azurerm"
   }
 
   location = "${local.location}"
