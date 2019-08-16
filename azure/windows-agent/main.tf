@@ -6,13 +6,13 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name     = "demo52"
-  location         = "northeurope"
-  dcos_version     = "1.13.3"
-  dcos_variant     = "open"
-  dcos_instance_os = "centos_7.6"
-  dcos_winagent_os = "windows_1809"
-  vm_size          = "Standard_D2s_v3"
+  cluster_name        = "demo52"
+  location            = "northeurope"
+  dcos_version        = "1.13.3"
+  dcos_variant        = "open"
+  dcos_instance_os    = "centos_7.6"
+  dcos_winagent_os    = "windows_1809"
+  vm_size             = "Standard_D2s_v3"
   ssh_public_key_file = "~/.ssh/aws-meso-wind.pub"
 }
 
@@ -59,6 +59,7 @@ module "dcos" {
 
 module "winagent" {
   source = "dcos-terraform/windows-instance/azurerm"
+
   providers = {
     azurerm = "azurerm"
   }
@@ -69,12 +70,14 @@ module "winagent" {
 
   # be aware - Azure limits the Windows hostname with 15 chars:
   hostname_format = "winagt-%[1]d-%[2]s"
+
   image = {
     "offer"     = "MicrosoftWindowsServer"
     "publisher" = "WindowsServer"
     "sku"       = "Datacenter-Core-1809-with-Containers-smalldisk"
     "version"   = "17763.615.1907121548"
   }
+
   subnet_id           = "${module.dcos.infrastructure.subnet_id}"
   resource_group_name = "${module.dcos.infrastructure.resource_group_name}"
   vm_size             = "${local.vm_size}"
