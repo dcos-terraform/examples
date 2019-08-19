@@ -10,6 +10,7 @@ For production usage make sure you understand how terraform works and stores its
   - [Existing VPC](aws/existing-vpc/) - An example using an already existing VPC.
   - [Additional Instances](aws/additional-instances/) - An example for provisioning extra agent nodes with another disk configuration.
   - [Remote Region](aws/remote-region/) - An example for using remote regions.
+  - [Windows Agent](aws/windows-agent) - An example with windows agent support.
 - GCP
   - [Simple](gcp/simple/) - An example for a simple setup of DC/OS.
   - [Additional Instances](gcp/additional-instances/) - An example for provisioning extra agent nodes with another disk configuration.

@@ -8,7 +8,7 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name = "generic-dcos-ee-demo"
+  cluster_name = "generic-dcos-demo"
 }
 
 module "dcos" {
@@ -27,7 +27,7 @@ module "dcos" {
   num_private_agents = "1"
   num_public_agents  = "1"
 
-  dcos_instance_os        = "centos_7.5"
+  dcos_instance_os        = "centos_7.6"
   bootstrap_instance_type = "m5.xlarge"
 
   # dcos_variant              = "ee"
@@ -35,7 +35,7 @@ module "dcos" {
   dcos_variant = "open"
 
   dcos_version              = "1.13.0"
-  ansible_bundled_container = "sebbrandt87/dcos-ansible-bundle:windows-support"
+  ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-c2d8296"
 
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
@@ -47,7 +47,7 @@ module "dcos" {
 
 module "winagent" {
   source  = "dcos-terraform/windows-instance/aws"
-  version = "~> 0.2.1"
+  version = "~> 0.0.1"
 
   providers = {
     aws = "aws"
