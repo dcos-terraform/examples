@@ -81,7 +81,6 @@ module "winagent" {
   resource_group_name = "${module.dcos.infrastructure.resource_group_name}"
   vm_size             = "${local.vm_size}"
   admin_username      = "dcosadmin"
-  public_ssh_key      = "${local.ssh_public_key_file}"
 
   num = "3"
 }

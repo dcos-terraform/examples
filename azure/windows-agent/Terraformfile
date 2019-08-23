@@ -12,6 +12,6 @@
     "source": "git::https://github.com/sergiimatus/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
   },
   "dcos-terraform/windows-instance/azurerm": {
-    "source": "git::https://github.com/sergiimatus/terraform-azurerm-windows-instance.git?ref=master"
+    "source": "git::https://github.com/sergiimatus/terraform-azurerm-windows-instance-1.git?ref=master"
   }
 }
