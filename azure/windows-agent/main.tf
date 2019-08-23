@@ -6,14 +6,14 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name        = "demo52"
-  location            = "northeurope"
+  cluster_name        = "prod"
+  location            = "West US"
   dcos_version        = "1.13.3"
   dcos_variant        = "open"
   dcos_instance_os    = "centos_7.6"
   dcos_winagent_os    = "windows_1809"
   vm_size             = "Standard_D2s_v3"
-  ssh_public_key_file = "~/.ssh/aws-meso-wind.pub"
+  ssh_public_key_file = "~/.ssh/id_rsa.pub"
 }
 
 module "dcos" {
@@ -30,11 +30,11 @@ module "dcos" {
   ssh_public_key_file = "${local.ssh_public_key_file}"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
-  num_masters        = "3"
-  num_private_agents = "1"
-  num_public_agents  = "1"
+  num_masters        = 3
+  num_private_agents = 1
+  num_public_agents  = 1
 
-  bootstrap_vm_size      = "Standard_B2ms"
+  bootstrap_vm_size      = "Standard_B4ms"
   masters_vm_size        = "${local.vm_size}"
   private_agents_vm_size = "${local.vm_size}"
   public_agents_vm_size  = "${local.vm_size}"
@@ -42,10 +42,10 @@ module "dcos" {
   dcos_instance_os = "${local.dcos_instance_os}"
 
   dcos_variant = "${local.dcos_variant}"
-  dcos_version = "1.13.3"
+  dcos_version = "${local.dcos_version}"
 
   # dcos_license_key_contents = "${file("~/license.txt")}"
-  ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-d513b6d"
+  # ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-d513b6d"
 
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
@@ -70,19 +70,20 @@ module "winagent" {
   # be aware - Azure limits the Windows hostname with 15 chars:
   hostname_format = "winagt-%[1]d-%[2]s"
 
-  image = {
-    "offer"     = "MicrosoftWindowsServer"
-    "publisher" = "WindowsServer"
-    "sku"       = "Datacenter-Core-1809-with-Containers-smalldisk"
-    "version"   = "17763.615.1907121548"
-  }
+  # Custom image can be specified in following format:
+  #image = {
+  #  "offer"     = "MicrosoftWindowsServer"
+  #  "publisher" = "WindowsServer"
+  #  "sku"       = "Datacenter-Core-1809-with-Containers-smalldisk"
+  #  "version"   = "17763.615.1907121548"
+  #}
 
   subnet_id           = "${module.dcos.infrastructure.subnet_id}"
   resource_group_name = "${module.dcos.infrastructure.resource_group_name}"
   vm_size             = "${local.vm_size}"
   admin_username      = "dcosadmin"
 
-  num = "3"
+  num = 3
 }
 
 output "winagent-ips" {

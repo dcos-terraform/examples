@@ -1,17 +1,17 @@
 {
   "dcos-terraform/nsg/azurerm": {
-    "source": "git::https://github.com/sergiimatus/terraform-azurerm-nsg.git?ref=feature/windows-support"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-nsg.git?ref=support/0.2.x"
   },
   "dcos-terraform/tested-oses/azurerm": {
-    "source": "git::https://github.com/sergiimatus/terraform-azurerm-tested-oses.git?ref=feature/windows-support"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-tested-oses.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos/azurerm": {
-    "source": "git::https://github.com/sergiimatus/terraform-azurerm-dcos.git?ref=feature/windows-support"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-dcos.git?ref=support/0.2.x"
   },
   "dcos-terraform/dcos-install-remote-exec-ansible/null": {
-    "source": "git::https://github.com/sergiimatus/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
   },
   "dcos-terraform/windows-instance/azurerm": {
-    "source": "git::https://github.com/sergiimatus/terraform-azurerm-windows-instance-1.git?ref=master"
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-windows-instance.git?ref=support/0.2.x"
   }
 }
