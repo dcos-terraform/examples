@@ -45,8 +45,7 @@ module "dcos" {
   dcos_version = "1.13.3"
 
   # dcos_license_key_contents = "${file("~/license.txt")}"
-  #ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-039d79d"
-  ansible_bundled_container = "sergiimatusepam/dcos-ansible-bundle:feature-windows-support"
+  ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-d513b6d"
 
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
