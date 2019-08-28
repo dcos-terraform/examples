@@ -45,7 +45,7 @@ module "dcos" {
   dcos_version = "${local.dcos_version}"
 
   # dcos_license_key_contents = "${file("~/license.txt")}"
-  # ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-d513b6d"
+  ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-d513b6d"
 
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
@@ -69,14 +69,6 @@ module "winagent" {
 
   # be aware - Azure limits the Windows hostname with 15 chars:
   hostname_format = "winagt-%[1]d-%[2]s"
-
-  # Custom image can be specified in following format:
-  #image = {
-  #  "offer"     = "MicrosoftWindowsServer"
-  #  "publisher" = "WindowsServer"
-  #  "sku"       = "Datacenter-Core-1809-with-Containers-smalldisk"
-  #  "version"   = "17763.615.1907121548"
-  #}
 
   subnet_id           = "${module.dcos.infrastructure.subnet_id}"
   resource_group_name = "${module.dcos.infrastructure.resource_group_name}"

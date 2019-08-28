@@ -1,16 +1,4 @@
 {
-  "dcos-terraform/nsg/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-nsg.git?ref=support/0.2.x"
-  },
-  "dcos-terraform/tested-oses/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-tested-oses.git?ref=support/0.2.x"
-  },
-  "dcos-terraform/dcos/azurerm": {
-    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-dcos.git?ref=support/0.2.x"
-  },
-  "dcos-terraform/dcos-install-remote-exec-ansible/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
-  },
   "dcos-terraform/windows-instance/azurerm": {
     "source": "git::https://github.com/dcos-terraform/terraform-azurerm-windows-instance.git?ref=support/0.2.x"
   }
