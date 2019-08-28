@@ -58,6 +58,7 @@ module "dcos" {
 
 module "winagent" {
   source = "dcos-terraform/windows-instance/azurerm"
+  version = "~> 0.0.1"
 
   providers = {
     azurerm = "azurerm"
