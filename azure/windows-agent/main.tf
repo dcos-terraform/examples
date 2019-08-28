@@ -67,7 +67,6 @@ module "winagent" {
   dcos_instance_os = "${local.dcos_winagent_os}"
   cluster_name     = "${local.cluster_name}"
 
-  # be aware - Azure limits the Windows hostname with 15 chars:
   hostname_format = "winagt-%[1]d-%[2]s"
 
   subnet_id           = "${module.dcos.infrastructure.subnet_id}"
