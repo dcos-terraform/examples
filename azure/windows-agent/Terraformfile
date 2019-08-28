@@ -1,0 +1,5 @@
+{
+  "dcos-terraform/windows-instance/azurerm": {
+    "source": "git::https://github.com/dcos-terraform/terraform-azurerm-windows-instance.git?ref=support/0.2.x"
+  }
+}
