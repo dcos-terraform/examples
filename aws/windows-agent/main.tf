@@ -35,6 +35,8 @@ module "dcos" {
   dcos_variant = "open"
 
   dcos_version              = "1.13.3"
+  # custom download path must match the above provided dcos_version
+  # custom_dcos_download_path = ""
   ansible_bundled_container = "mesosphere/dcos-ansible-bundle:feature-windows-support-d513b6d"
 
   # provide a SHA512 hashed password, here "deleteme"

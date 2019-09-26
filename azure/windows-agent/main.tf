@@ -9,6 +9,8 @@ locals {
   cluster_name        = "prod"
   location            = "West US"
   dcos_version        = "1.13.3"
+  # custom download path must match the above provided dcos_version
+  # custom_dcos_download_path = ""
   dcos_variant        = "open"
   dcos_instance_os    = "centos_7.6"
   dcos_winagent_os    = "windows_1809"
