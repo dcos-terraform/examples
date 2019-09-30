@@ -9,6 +9,7 @@ For production usage make sure you understand how terraform works and stores its
 - [AWS](aws/simple/)
 - [Azure](azure/simple/)
 - [GCP](gcp/simple/)
+- [OpenStack](openstack/)
 
 ###### *Existing VPC*: Using an already existing VPC.
 - [AWS](aws/existing-vpc/)
