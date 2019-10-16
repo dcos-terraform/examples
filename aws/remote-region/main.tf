@@ -116,7 +116,7 @@ module "vpc-connection-master-usw2" {
     "aws.remote" = "aws.us-west-2"
   }
 
-  local_vpc_id        = "${module.dcos.infrastructure.vpc_id}"
+  local_vpc_id        = "${module.dcos.infrastructure.vpc.id}"
   local_subnet_range  = "${local.region_networks["master"]}"
   remote_vpc_id       = "${module.dcos-usw2.vpc.id}"
   remote_subnet_range = "${local.region_networks["us-west-2"]}"
@@ -160,7 +160,7 @@ module "vpc-connection-master-euw1" {
     "aws.remote" = "aws.eu-west-1"
   }
 
-  local_vpc_id        = "${module.dcos.infrastructure.vpc_id}"
+  local_vpc_id        = "${module.dcos.infrastructure.vpc.id}"
   local_subnet_range  = "${local.region_networks["master"]}"
   remote_vpc_id       = "${module.dcos-euw1.vpc.id}"
   remote_subnet_range = "${local.region_networks["eu-west-1"]}"
