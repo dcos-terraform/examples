@@ -29,12 +29,26 @@ module "dcos" {
   bootstrap_instance_type = "m4.xlarge"
 
   dcos_variant              = "ee"
-  dcos_version              = "1.13.1"
+  dcos_version              = "2.1.0"
   dcos_license_key_contents = "${file("~/license.txt")}"
+  ansible_bundled_container = "mesosphere/dcos-ansible-bundle:windows-beta-support"
+
+  #Linux Installer path - place url with "pull/PR#" or "master" suffix here:
+  custom_dcos_download_path = "https://downloads.mesosphere.com/dcos-enterprise/testing/master/dcos_generate_config.ee.sh"
 
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
   dcos_superuser_username      = "demo-super"
+
+  dcos_config = <<-EOF
+enable_windows_agents: true
+-EOF
+
+  #Windows Installer path - place url with "pull/PR#" or "master" suffix here:
+ansible_additional_config = <<-EOF
+dcos:
+ download_win: "https://downloads.mesosphere.com/dcos-enterprise/testing/master/windows/dcos_generate_config_win.ee.sh"
+-EOF
 }
 
 module "windowsagent" {
@@ -47,21 +61,7 @@ module "windowsagent" {
   aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}", "${module.dcos.infrastructure.security_groups.admin}"]
   aws_key_name           = "${module.dcos.infrastructure.aws_key_name}"
 
-  # aws_extra_volumes = [
-  #   {
-  #     size        = "100"
-  #     type        = "gp2"
-  #     iops        = "3000"
-  #     device_name = "/dev/xvdi"
-  #   },
-  #   {
-  #     size        = "1000"
-  #     type        = ""          # Use AWS default.
-  #     iops        = "0"         # Use AWS default.
-  #     device_name = "/dev/xvdj"
-  #   },
-  # ]
-
+  # provide the number of windows agents that should be provisioned.
   num = "1"
 }
 
