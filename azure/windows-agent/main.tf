@@ -6,7 +6,7 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name     = "demo-ee"
+  cluster_name     = "demoee"
   location         = "westus"
   dcos_version     = "2.1.0"
   dcos_variant     = "ee"
@@ -81,15 +81,14 @@ module "winagent" {
   cluster_name     = "${local.cluster_name}"
 
   # be aware - Azure limits the Windows hostname with 15 chars:
-  hostname_format = "win-%[1]d-%[2]s"
+  hostname_format = "winagt-%[1]d-%[2]s"
 
   subnet_id                 = "${module.dcos.infrastructure.subnet_id}"
   resource_group_name       = "${module.dcos.infrastructure.resource_group_name}"
   network_security_group_id = "${module.dcos.infrastructure.private_agents.nsg_id}"
   vm_size                   = "${local.vm_size}"
   admin_username            = "dcosadmin"
-  # public_ssh_key            = "${local.ssh_public_key_file}"
-
+  
   num = "1"
 }
 
