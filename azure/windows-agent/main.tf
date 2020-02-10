@@ -6,13 +6,13 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name     = "demoee"
-  location         = "westus"
-  dcos_version     = "2.1.0"
-  dcos_variant     = "ee"
-  dcos_instance_os = "centos_7.6"
-  dcos_winagent_os = "windows_1809"
-  vm_size          = "Standard_D2s_v3"
+  cluster_name        = "demoee"
+  location            = "westus"
+  dcos_version        = "2.1.0"
+  dcos_variant        = "ee"
+  dcos_instance_os    = "centos_7.6"
+  dcos_winagent_os    = "windows_1809"
+  vm_size             = "Standard_D2s_v3"
   ssh_public_key_file = "~/.ssh/id_rsa.pub"
 }
 
@@ -46,7 +46,7 @@ module "dcos" {
 
   dcos_license_key_contents = "${file("~/.ssh/license.txt")}"
   ansible_bundled_container = "mesosphere/dcos-ansible-bundle:windows-beta-support"
-  
+
   #Linux Installer path - place url with "pull/PR#" or "master" suffix here:
   custom_dcos_download_path = "https://downloads.mesosphere.com/dcos-enterprise/testing/master/dcos_generate_config.ee.sh"
 
@@ -60,7 +60,6 @@ dcos:
   download_win: https://downloads.mesosphere.com/dcos-enterprise/testing/master/windows/dcos_generate_config_win.ee.sh
 -EOF
 
-
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
   dcos_superuser_username      = "demo-super"
@@ -72,6 +71,7 @@ dcos:
 
 module "winagent" {
   source = "dcos-terraform/windows-instance/azurerm"
+
   providers = {
     azurerm = "azurerm"
   }
@@ -88,7 +88,7 @@ module "winagent" {
   network_security_group_id = "${module.dcos.infrastructure.private_agents.nsg_id}"
   vm_size                   = "${local.vm_size}"
   admin_username            = "dcosadmin"
-  
+
   num = "1"
 }
 
