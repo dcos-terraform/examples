@@ -1,4 +1,6 @@
-provider "aws" {}
+provider "aws" {
+  region = "us-east-1"
+}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
