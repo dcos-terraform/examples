@@ -53,7 +53,7 @@ dcos:
 
 module "windowsagent" {
   source  = "dcos-terraform/windows-instance/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.0.3"
 
   cluster_name           = "${local.cluster_name}"
   hostname_format        = "%[3]s-winagent%[1]d-%[2]s"
