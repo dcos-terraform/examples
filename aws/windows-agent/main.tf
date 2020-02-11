@@ -78,7 +78,7 @@ ${join("\n", module.dcos.infrastructure.private_agents.public_ips)}
 [agents_public]
 ${join("\n", module.dcos.infrastructure.public_agents.public_ips)}
 [agents_windows]
-${join("\n",formatlist("%s ansible_user=${module.windowsagent.os_user} ansible_password=%s", module.windowsagent.public_ips, module.windowsagent.windows-passwords))}
+${join("\n",formatlist("%s ansible_user=${module.windowsagent.os_user} ansible_password=%s", module.windowsagent.public_ips, module.windowsagent.windows_passwords))}
 [bootstraps:vars]
 node_type=bootstrap
 [masters:vars]
@@ -113,5 +113,5 @@ output "masters_dns_name" {
 
 output "passwords" {
   description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${module.windowsagent.windows-passwords}"
+  value       = "${module.windowsagent.windows_passwords}"
 }
