@@ -39,8 +39,8 @@ module "dcos" {
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
   dcos_superuser_username      = "demo-super"
-  additional_windows_private_agent_ips       = ["${concat(module.winagent.private_ips)}"]
-  additional_windows_private_agent_passwords = ["${concat(module.winagent.windows_passwords)}"]
+  additional_windows_private_agent_ips       = ["${concat(module.windowsagent.private_ips)}"]
+  additional_windows_private_agent_passwords = ["${concat(module.windowsagent.windows_passwords)}"]
 
   dcos_config = <<-EOF
 enable_windows_agents: true
