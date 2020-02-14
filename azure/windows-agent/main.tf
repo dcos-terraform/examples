@@ -8,7 +8,7 @@ data "http" "whatismyip" {
 locals {
   cluster_name        = "demoee"
   location            = "westus"
-  dcos_version        = "2.1.0"
+  dcos_version        = "2.1.0-beta1"
   dcos_variant        = "ee"
   dcos_instance_os    = "centos_7.6"
   dcos_winagent_os    = "windows_1809"

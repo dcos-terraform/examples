@@ -29,7 +29,7 @@ module "dcos" {
   bootstrap_instance_type = "m4.xlarge"
 
   dcos_variant              = "ee"
-  dcos_version              = "2.1.0"
+  dcos_version              = "2.1.0-beta1"
   dcos_license_key_contents = "${file("~/license.txt")}"
   ansible_bundled_container = "mesosphere/dcos-ansible-bundle:windows-beta-support"
 
