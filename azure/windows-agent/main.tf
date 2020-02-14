@@ -48,7 +48,7 @@ module "dcos" {
   ansible_bundled_container = "mesosphere/dcos-ansible-bundle:windows-beta-support"
 
   #Linux Installer path - place url with "pull/PR#" or "master" suffix here:
-  custom_dcos_download_path = "https://downloads.mesosphere.com/dcos-enterprise/testing/master/dcos_generate_config.ee.sh"
+  custom_dcos_download_path = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta1/dcos_generate_config.ee.sh"
 
   dcos_config = <<-EOF
 enable_windows_agents: true
@@ -57,7 +57,7 @@ enable_windows_agents: true
   #Windows Installer path - place url with "pull/PR#" or "master" suffix here:
   ansible_additional_config = <<-EOF
 dcos:
-  download_win: https://downloads.mesosphere.com/dcos-enterprise/testing/master/windows/dcos_generate_config_win.ee.sh
+  download_win: "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta1/windows/dcos_generate_config_win.ee.sh"
 -EOF
 
   # provide a SHA512 hashed password, here "deleteme"
