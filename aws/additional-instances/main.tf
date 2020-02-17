@@ -26,7 +26,7 @@ module "dcos" {
   num_public_agents  = 1
 
   dcos_variant              = "ee"
-  dcos_version              = "1.13.3"
+  dcos_version              = "2.0.0"
   dcos_license_key_contents = "${file("~/license.txt")}"
 
   dcos_config = <<EOF
@@ -48,7 +48,7 @@ module "volumeagent" {
   aws_extra_volumes = [
     {
       size        = "100"
-      type        = "gp2"
+      type        = "io1"
       iops        = "3000"
       device_name = "/dev/xvdi"
     },
