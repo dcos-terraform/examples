@@ -1,4 +1,7 @@
-provider "aws" {}
+provider "aws" {
+  version = "~> 2.0"
+  region  = "us-east-1"
+}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
@@ -56,6 +59,10 @@ dcos:
 module "windowsagent" {
   source  = "dcos-terraform/windows-instance/aws"
   version = "~> 0.2.0"
+  
+  providers = {
+    aws = "aws"
+  }
 
   cluster_name           = "${local.cluster_name}"
   hostname_format        = "%[3]s-winagent%[1]d-%[2]s"
