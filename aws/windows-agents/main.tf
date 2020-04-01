@@ -6,7 +6,7 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name = "addinst"
+  cluster_name = "dcoswin"
 }
 
 module "dcos" {
@@ -26,11 +26,11 @@ module "dcos" {
   num_public_agents  = 1
 
   dcos_variant = "ee"
-  dcos_version = "2.1.0-beta2.1"
+  dcos_version = "2.1.0-beta2"
 
   #### WIP: DELETEME
 
-  ansible_bundled_container         = "mesosphere/dcos-ansible-bundle:windows"
+  ansible_bundled_container         = "fatz/dcos-ansible-bundle:merge-agentroles"
   custom_dcos_download_path         = "https://downloads.mesosphere.com/dcos-enterprise/testing/pull/7548/dcos_generate_config.ee.sh"
   custom_dcos_windows_download_path = "https://downloads.mesosphere.com/dcos-enterprise/testing/pull/7548/windows/dcos_generate_config_win.ee.sh"
 
