@@ -20,19 +20,17 @@ module "dcos" {
   cluster_name        = "${local.cluster_name}"
   ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
-
-  num_masters        = 1
-  num_private_agents = 1
-  num_public_agents  = 1
-
-  dcos_variant = "ee"
-  dcos_version = "2.1.0-beta2"
+  num_masters         = 1
+  num_private_agents  = 2
+  num_public_agents   = 1
+  dcos_variant        = "ee"
+  dcos_version        = "2.1.0-beta2"
 
   #### WIP: DELETEME
 
-  ansible_bundled_container         = "fatz/dcos-ansible-bundle:merge-agentroles"
-  custom_dcos_download_path         = "https://downloads.mesosphere.com/dcos-enterprise/testing/pull/7548/dcos_generate_config.ee.sh"
-  custom_dcos_windows_download_path = "https://downloads.mesosphere.com/dcos-enterprise/testing/pull/7548/windows/dcos_generate_config_win.ee.sh"
+  ansible_bundled_container         = "mesosphere/dcos-ansible-bundle:windows"
+  custom_dcos_download_path         = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta2/dcos_generate_config.ee.sh"
+  custom_dcos_windows_download_path = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta2/windows/dcos_generate_config_win.ee.sh"
 
   #### WIP: DELETEME
 
