@@ -27,3 +27,7 @@ For production usage make sure you understand how terraform works and stores its
 - [AWS](aws/gpu-agent/)
 - [Azure](azure/gpu-agent/)
 - [GCP](gcp/gpu-agent/)
+
+
+###### *Windows Agent*: Using windows agent in your cluster [BETA]
+- [AWS](aws/windows-agents/)
