@@ -24,13 +24,13 @@ module "dcos" {
   num_private_agents  = 2
   num_public_agents   = 1
   dcos_variant        = "ee"
-  dcos_version        = "2.1.0-beta2"
+  dcos_version        = "2.1.0-beta4"
 
   #### WIP: DELETEME
 
   ansible_bundled_container         = "mesosphere/dcos-ansible-bundle:windows"
-  custom_dcos_download_path         = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta2/dcos_generate_config.ee.sh"
-  custom_dcos_windows_download_path = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta2/windows/dcos_generate_config_win.ee.sh"
+  custom_dcos_download_path         = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta4/dcos_generate_config.ee.sh"
+  custom_dcos_windows_download_path = "https://downloads.mesosphere.io/dcos-enterprise/testing/2.1.0-beta4/windows/dcos_generate_config_win.ee.sh"
 
   #### WIP: DELETEME
 
