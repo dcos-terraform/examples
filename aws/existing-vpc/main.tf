@@ -7,11 +7,12 @@ variable "ssh_public_key" {
   description = <<EOF
 Specify a SSH public key in authorized keys format (e.g. "ssh-rsa ..") to be used with the instances. Make sure you added this key to your ssh-agent
 EOF
+  default     = ""
 }
 
 variable "dcos_version" {
   description = "DC/OS version to be used"
-  default     = "1.13.3"
+  default     = "2.1.0"
 }
 
 variable "cluster_name" {
@@ -45,34 +46,40 @@ variable "dcos_type" {
 
 variable "tags" {
   description = "Add custom tags to all resources"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
 variable "admin_ips" {
   description = "List of CIDR admin IPs"
-  type        = "list"
+  type        = list(string)
+  default     = []
 }
 
 ////////////////////////////////////////////
 /////////////// END VARIABLES //////////////
 ////////////////////////////////////////////
 
-provider "aws" {}
+provider "aws" {
+}
+
+data "http" "whatismyip" {
+  url = "http://whatismyip.akamai.com/"
+}
 
 // create a ssh-key-pair.
 resource "aws_key_pair" "deployer" {
-  provider = "aws"
+  provider = aws
 
   key_name   = "${var.cluster_name}-deployer-key"
-  public_key = "${var.ssh_public_key}"
+  public_key = coalesce(var.ssh_public_key, file("~/.ssh/id_rsa.pub"))
 }
 
 // select our default VPC.
 // instead of default you could specify an name or ID.
 // https://www.terraform.io/docs/providers/aws/d/vpc.html
 data "aws_vpc" "default" {
-  provider = "aws"
+  provider = aws
 
   default = true
 }
@@ -83,45 +90,54 @@ data "aws_vpc" "default" {
 // For redundancy make sure your subnets are distributed
 // across availability zones
 data "aws_subnet_ids" "default_subnets" {
-  provider = "aws"
+  provider = aws
 
-  vpc_id = "${data.aws_vpc.default.id}"
+  vpc_id = data.aws_vpc.default.id
 }
 
 // we use intermediate local variables. So whenever it is needed to replace
 // or drop a modules it is easier to change just the local variable instead
 // of all other references
 locals {
-  key_name     = "${aws_key_pair.deployer.key_name}"
-  vpc_id       = "${data.aws_vpc.default.id}"
-  subnet_range = "${data.aws_vpc.default.cidr_block}"
-  subnet_ids   = ["${data.aws_subnet_ids.default_subnets.ids}"]
+  key_name     = aws_key_pair.deployer.key_name
+  vpc_id       = data.aws_vpc.default.id
+  subnet_range = data.aws_vpc.default.cidr_block
+  subnet_ids   = data.aws_subnet_ids.default_subnets.ids
 }
 
 // Firewall. Create policies for instances and load balancers.
 // https://registry.terraform.io/modules/dcos-terraform/security-groups/aws
 module "dcos-security-groups" {
   source  = "dcos-terraform/security-groups/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  vpc_id       = "${local.vpc_id}"
-  subnet_range = "${local.subnet_range}"
-  cluster_name = "${var.cluster_name}"
-  admin_ips    = ["${var.admin_ips}"]
+  vpc_id       = local.vpc_id
+  subnet_range = local.subnet_range
+  cluster_name = var.cluster_name
+  admin_ips    = coalescelist(var.admin_ips, ["${data.http.whatismyip.body}/32"])
 }
 
 // we use intermediate local variables. So whenever it is needed to replace
 // or drop a modules it is easier to change just the local variable instead
 // of all other references
 locals {
-  instance_security_groups             = ["${list(module.dcos-security-groups.internal, module.dcos-security-groups.admin)}"]
-  security_groups_elb_masters          = ["${list(module.dcos-security-groups.admin,module.dcos-security-groups.internal)}"]
-  security_groups_elb_masters_internal = ["${list(module.dcos-security-groups.internal)}"]
-  security_groups_elb_public_agents    = ["${list(module.dcos-security-groups.admin,module.dcos-security-groups.internal)}"]
+  instance_security_groups = [
+    module.dcos-security-groups.internal,
+    module.dcos-security-groups.admin
+  ]
+  security_groups_elb_masters = [
+    module.dcos-security-groups.admin,
+    module.dcos-security-groups.internal
+  ]
+  security_groups_elb_masters_internal = [module.dcos-security-groups.internal]
+  security_groups_elb_public_agents = [
+    module.dcos-security-groups.admin,
+    module.dcos-security-groups.internal
+  ]
 }
 
 // Permissions creates instances profiles so you could use Rexray and Kubernetes with AWS support
@@ -130,122 +146,122 @@ locals {
 // https://registry.terraform.io/modules/dcos-terraform/iam/aws
 module "dcos-iam" {
   source  = "dcos-terraform/iam/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name = "${var.cluster_name}"
+  cluster_name = var.cluster_name
 }
 
 // This spawning the Bootstrap node which will be used as the internal source for the installer.
 // https://registry.terraform.io/modules/dcos-terraform/bootstrap/aws
 module "dcos-bootstrap-instance" {
   source  = "dcos-terraform/bootstrap/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name = "${var.cluster_name}"
+  cluster_name = var.cluster_name
 
-  aws_subnet_ids         = ["${local.subnet_ids}"]
-  aws_security_group_ids = ["${local.instance_security_groups}"]
-  aws_key_name           = "${local.key_name}"
+  aws_subnet_ids         = local.subnet_ids
+  aws_security_group_ids = local.instance_security_groups
+  aws_key_name           = local.key_name
   aws_instance_type      = "m5.large"
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 // This module creates the master instances of your DC/OS cluster. If neccessary you can change the instance type or OS.
 // https://registry.terraform.io/modules/dcos-terraform/masters/aws
 module "dcos-master-instances" {
   source  = "dcos-terraform/masters/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name = "${var.cluster_name}"
+  cluster_name = var.cluster_name
 
-  aws_subnet_ids         = ["${local.subnet_ids}"]
-  aws_security_group_ids = ["${local.instance_security_groups}"]
-  aws_key_name           = "${local.key_name}"
+  aws_subnet_ids         = local.subnet_ids
+  aws_security_group_ids = local.instance_security_groups
+  aws_key_name           = local.key_name
   aws_instance_type      = "m5.xlarge"
 
-  num_masters = "${var.num_masters}"
+  num_masters = var.num_masters
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 // This module create the private agent instances of your DC/OS cluster. If neccessary you can change the instance type or OS.
 // https://registry.terraform.io/modules/dcos-terraform/private-agents/aws
 module "dcos-privateagent-instances" {
   source  = "dcos-terraform/private-agents/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name = "${var.cluster_name}"
+  cluster_name = var.cluster_name
 
-  aws_subnet_ids         = ["${local.subnet_ids}"]
-  aws_security_group_ids = ["${local.instance_security_groups}"]
-  aws_key_name           = "${local.key_name}"
+  aws_subnet_ids         = local.subnet_ids
+  aws_security_group_ids = local.instance_security_groups
+  aws_key_name           = local.key_name
   aws_instance_type      = "m5.large"
 
-  num_private_agents = "${var.num_private_agents}"
+  num_private_agents = var.num_private_agents
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 // This module create the public agent instances of your DC/OS cluster. If neccessary you can change the instance type or OS.
 // https://registry.terraform.io/modules/dcos-terraform/public-agents/aws
 module "dcos-publicagent-instances" {
   source  = "dcos-terraform/public-agents/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name = "${var.cluster_name}"
+  cluster_name = var.cluster_name
 
-  aws_subnet_ids         = ["${local.subnet_ids}"]
-  aws_security_group_ids = ["${local.instance_security_groups}"]
-  aws_key_name           = "${local.key_name}"
+  aws_subnet_ids         = local.subnet_ids
+  aws_security_group_ids = local.instance_security_groups
+  aws_key_name           = local.key_name
   aws_instance_type      = "m5.large"
 
-  num_public_agents = "${var.num_public_agents}"
+  num_public_agents = var.num_public_agents
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 // we use intermediate local variables. So whenever it is needed to replace
 // or drop a modules it is easier to change just the local variable instead
 // of all other references
 locals {
-  bootstrap_ip         = "${module.dcos-bootstrap-instance.public_ip}"
-  bootstrap_private_ip = "${module.dcos-bootstrap-instance.private_ip}"
-  bootstrap_os_user    = "${module.dcos-bootstrap-instance.os_user}"
+  bootstrap_ip         = module.dcos-bootstrap-instance.public_ip
+  bootstrap_private_ip = module.dcos-bootstrap-instance.private_ip
+  bootstrap_os_user    = module.dcos-bootstrap-instance.os_user
 
-  master_ips         = ["${module.dcos-master-instances.public_ips}"]
-  master_private_ips = ["${module.dcos-master-instances.private_ips}"]
-  masters_os_user    = "${module.dcos-master-instances.os_user}"
-  master_instances   = ["${module.dcos-master-instances.instances}"]
+  master_ips         = module.dcos-master-instances.public_ips
+  master_private_ips = module.dcos-master-instances.private_ips
+  masters_os_user    = module.dcos-master-instances.os_user
+  master_instances   = module.dcos-master-instances.instances
 
-  private_agent_ips         = ["${module.dcos-privateagent-instances.public_ips}"]
-  private_agent_private_ips = ["${module.dcos-privateagent-instances.private_ips}"]
-  private_agents_os_user    = "${module.dcos-privateagent-instances.os_user}"
+  private_agent_ips         = module.dcos-privateagent-instances.public_ips
+  private_agent_private_ips = module.dcos-privateagent-instances.private_ips
+  private_agents_os_user    = module.dcos-privateagent-instances.os_user
 
-  public_agent_ips         = ["${module.dcos-publicagent-instances.public_ips}"]
-  public_agent_private_ips = ["${module.dcos-publicagent-instances.private_ips}"]
-  public_agents_os_user    = "${module.dcos-publicagent-instances.os_user}"
-  public_agent_instances   = ["${module.dcos-publicagent-instances.instances}"]
+  public_agent_ips         = module.dcos-publicagent-instances.public_ips
+  public_agent_private_ips = module.dcos-publicagent-instances.private_ips
+  public_agents_os_user    = module.dcos-publicagent-instances.os_user
+  public_agent_instances   = module.dcos-publicagent-instances.instances
 }
 
 // Load balancers is providing three load balancers.
@@ -264,33 +280,33 @@ locals {
 
 module "dcos-lb" {
   source  = "dcos-terraform/lb-dcos/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name = "${var.cluster_name}"
-  subnet_ids   = ["${data.aws_subnet_ids.default_subnets.ids}"]
+  cluster_name = var.cluster_name
+  subnet_ids   = data.aws_subnet_ids.default_subnets.ids
 
-  security_groups_masters          = ["${local.security_groups_elb_masters}"]
-  security_groups_masters_internal = ["${local.security_groups_elb_masters_internal}"]
-  security_groups_public_agents    = ["${local.security_groups_elb_public_agents}"]
+  security_groups_masters          = local.security_groups_elb_masters
+  security_groups_masters_internal = local.security_groups_elb_masters_internal
+  security_groups_public_agents    = local.security_groups_elb_public_agents
 
-  master_instances       = ["${module.dcos-master-instances.instances}"]
-  public_agent_instances = ["${module.dcos-publicagent-instances.instances}"]
+  master_instances       = module.dcos-master-instances.instances
+  public_agent_instances = module.dcos-publicagent-instances.instances
 
-  num_masters       = "${var.num_masters}"
-  num_public_agents = "${var.num_public_agents}"
+  num_masters       = var.num_masters
+  num_public_agents = var.num_public_agents
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 // we use intermediate local variables. So whenever it is needed to replace
 // or drop a modules it is easier to change just the local variable instead
 // of all other references
 locals {
-  masters_dns_name = "${module.dcos-lb.masters_dns_name}"
+  masters_dns_name = module.dcos-lb.masters_dns_name
 }
 
 // DC/OS Install module takes a list of public and private ip addresses of each of the node type to install.
@@ -302,34 +318,34 @@ locals {
 // specified in this module. A good description could be found here: https://registry.terraform.io/modules/dcos-terraform/dcos-core/template
 module "dcos-install" {
   source  = "dcos-terraform/dcos-install-remote-exec/null"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   # bootstrap
-  bootstrap_ip         = "${local.bootstrap_ip}"
-  bootstrap_private_ip = "${local.bootstrap_private_ip}"
-  bootstrap_os_user    = "${local.bootstrap_os_user}"
+  bootstrap_ip         = local.bootstrap_ip
+  bootstrap_private_ip = local.bootstrap_private_ip
+  bootstrap_os_user    = local.bootstrap_os_user
 
   # master
-  master_ips         = ["${local.master_ips}"]
-  master_private_ips = ["${local.master_private_ips}"]
-  masters_os_user    = "${local.masters_os_user}"
-  num_masters        = "${var.num_masters}"
+  master_ips         = local.master_ips
+  master_private_ips = local.master_private_ips
+  masters_os_user    = local.masters_os_user
+  num_masters        = var.num_masters
 
   # private agent
-  private_agent_ips         = ["${local.private_agent_ips}"]
-  private_agent_private_ips = ["${local.private_agent_private_ips}"]
-  private_agents_os_user    = "${local.private_agents_os_user}"
-  num_private_agents        = "${var.num_private_agents}"
+  private_agent_ips         = local.private_agent_ips
+  private_agent_private_ips = local.private_agent_private_ips
+  private_agents_os_user    = local.private_agents_os_user
+  num_private_agents        = var.num_private_agents
 
   # public agent
-  public_agent_ips         = ["${local.public_agent_ips}"]
-  public_agent_private_ips = ["${local.public_agent_private_ips}"]
-  public_agents_os_user    = "${local.public_agents_os_user}"
-  num_public_agents        = "${var.num_public_agents}"
+  public_agent_ips         = local.public_agent_ips
+  public_agent_private_ips = local.public_agent_private_ips
+  public_agents_os_user    = local.public_agents_os_user
+  num_public_agents        = var.num_public_agents
 
   # DC/OS options
-  dcos_cluster_name = "${var.cluster_name}"
-  dcos_version      = "${var.dcos_version}"
+  dcos_cluster_name = var.cluster_name
+  dcos_version      = var.dcos_version
 
   dcos_ip_detect_public_contents = <<EOF
 #!/bin/sh
@@ -338,6 +354,7 @@ set -o nounset -o errexit
 curl -fsSL http://whatismyip.akamai.com/
 EOF
 
+
   dcos_ip_detect_contents = <<EOF
 #!/bin/sh
 # Example ip-detect script using an external authority
@@ -345,6 +362,7 @@ EOF
 # ipv4 address
 curl -fsSL http://169.254.169.254/latest/meta-data/local-ipv4
 EOF
+
 
   dcos_fault_domain_detect_contents = <<EOF
 #!/bin/sh
@@ -357,13 +375,14 @@ ZONE=$(echo $METADATA | grep -Po "\"availabilityZone\"\s+:\s+\"(.*?)\"" | cut -f
 echo "{\"fault_domain\":{\"region\":{\"name\": \"$REGION\"},\"zone\":{\"name\": \"$ZONE\"}}}"
 EOF
 
-  dcos_variant                   = "${var.dcos_type}"
-  dcos_license_key_contents      = "${var.dcos_license_key_contents}"
+
+  dcos_variant                   = var.dcos_type
+  dcos_license_key_contents      = var.dcos_license_key_contents
   dcos_master_discovery          = "static"
   dcos_exhibitor_storage_backend = "static"
 }
 
 output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${local.masters_dns_name}"
+  value       = local.masters_dns_name
 }

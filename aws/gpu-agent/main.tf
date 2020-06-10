@@ -1,4 +1,5 @@
-provider "aws" {}
+provider "aws" {
+}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
@@ -11,13 +12,13 @@ locals {
 
 module "dcos" {
   source  = "dcos-terraform/dcos/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name        = "${local.cluster_name}"
+  cluster_name        = local.cluster_name
   ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
@@ -26,24 +27,24 @@ module "dcos" {
   num_public_agents  = 1
 
   dcos_variant              = "ee"
-  dcos_version              = "1.13.3"
-  dcos_license_key_contents = "${file("~/license.txt")}"
+  dcos_version              = "2.1.0"
+  dcos_license_key_contents = file("~/license.txt")
 
-  additional_private_agent_ips = ["${concat(module.gpuagent.private_ips)}"]
+  additional_private_agent_ips = concat(module.gpuagent.private_ips)
 }
 
 module "gpuagent" {
   source  = "dcos-terraform/private-agents/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name           = "${local.cluster_name}"
-  aws_subnet_ids         = ["${module.dcos.infrastructure.vpc.subnet_ids}"]
-  aws_security_group_ids = ["${module.dcos.infrastructure.security_groups.internal}"]
-  aws_key_name           = "${module.dcos.infrastructure.aws_key_name}"
+  cluster_name           = local.cluster_name
+  aws_subnet_ids         = module.dcos.infrastructure_vpc_subnet_ids
+  aws_security_group_ids = [module.dcos.infrastructure_security_groups_internal]
+  aws_key_name           = module.dcos.infrastructure_aws_key_name
   aws_instance_type      = "p2.xlarge"
 
   num_private_agents = 1
@@ -51,5 +52,5 @@ module "gpuagent" {
 
 output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${module.dcos.masters-loadbalancer}"
+  value       = module.dcos.masters-loadbalancer
 }

@@ -1,98 +1,130 @@
 {
   "dcos-terraform/dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-dcos.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-dcos.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-masters.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-masters.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-public-agents.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-public-agents.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/private-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-private-agents.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-private-agents.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/vpc/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-vpc.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-vpc.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/security-groups/aws": {
-      "source": "git::https://github.com/dcos-terraform/terraform-aws-security-groups.git?ref=support/0.2.x"
+      "source": "git::https://github.com/dcos-terraform/terraform-aws-security-groups.git?ref=support/0.3.x"
+      ,"set_version": "0.3.0"
   },
   "dcos-terraform/bootstrap/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-bootstrap.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-bootstrap.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/iam/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-iam.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-iam.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/instance/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-instance.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-instance.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/tested-oses/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-tested-oses.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-tested-oses.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/elb/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/elb-masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-masters.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-masters.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/elb-masters-internal/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-masters-internal.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-masters-internal.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/elb-public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-public-agents.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-public-agents.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/elb-dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-dcos.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-elb-dcos.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/infrastructure/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-infrastructure.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-infrastructure.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/dcos-core/template": {
-    "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-template-dcos-core.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/dcos-install-remote-exec/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/remote-connection-route/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-remote-connection-route.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-remote-connection-route.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/route53-elb/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-elb.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-elb.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/route53-instances/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-instances.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-instances.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/route53-zone/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-zone.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-route53-zone.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/dcos-ansible-bridge/localfile": {
-    "source": "git::https://github.com/dcos-terraform/terraform-localfile-dcos-ansible-bridge.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-localfile-dcos-ansible-bridge.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/volumes-dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-volumes-dcos.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-volumes-dcos.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/lb/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/lb-masters/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-masters.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-masters.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/lb-masters-internal/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-masters-internal.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-masters-internal.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/lb-public-agents/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-public-agents.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-public-agents.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/lb-dcos/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-dcos.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-lb-dcos.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/vpc-peering/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-vpc-peering.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-vpc-peering.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/remote-region/aws": {
-    "source": "git::https://github.com/dcos-terraform/terraform-aws-remote-region.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-aws-remote-region.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   },
   "dcos-terraform/dcos-install-remote-exec-ansible/null": {
-    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.2.x"
+    "source": "git::https://github.com/dcos-terraform/terraform-null-dcos-install-remote-exec-ansible.git?ref=support/0.3.x"
+    ,"set_version": "0.3.0"
   }
 }

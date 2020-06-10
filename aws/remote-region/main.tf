@@ -21,9 +21,9 @@ data "http" "whatismyip" {
 locals {
   ssh_public_key_file       = "~/.ssh/id_rsa.pub"
   cluster_name              = "remotetest"
-  dcos_license_key_contents = "${file("~/license.txt")}"
+  dcos_license_key_contents = file("~/license.txt")
   dcos_variant              = "ee"
-  dcos_version              = "1.13.3"
+  dcos_version              = "2.1.0"
 
   region_networks = {
     // dont use 172.17/26 as its used by docker.
@@ -32,7 +32,7 @@ locals {
     "eu-west-1" = "10.129.0.0/16"
   }
 
-  allowed_internal_networks = ["${values(local.region_networks)}"]
+  allowed_internal_networks = values(local.region_networks)
 }
 
 ############################################################
@@ -40,13 +40,13 @@ locals {
 ############################################################
 module "dcos" {
   source  = "dcos-terraform/dcos/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws.master"
+    aws = aws.master
   }
 
-  subnet_range       = "${local.region_networks["master"]}"
+  subnet_range       = local.region_networks["master"]
   num_masters        = 1
   num_private_agents = 1
   num_public_agents  = 1
@@ -57,25 +57,20 @@ module "dcos" {
 
   // accepted_internal_networks is holding a list of internal use networks.
   // They will be
-  accepted_internal_networks = "${local.allowed_internal_networks}"
+  accepted_internal_networks = local.allowed_internal_networks
 
-  cluster_name              = "${local.cluster_name}"
-  ssh_public_key_file       = "${local.ssh_public_key_file}"
+  cluster_name              = local.cluster_name
+  ssh_public_key_file       = local.ssh_public_key_file
   admin_ips                 = ["${data.http.whatismyip.body}/32"]
-  dcos_license_key_contents = "${local.dcos_license_key_contents}"
-  dcos_variant              = "${local.dcos_variant}"
-  dcos_version              = "${local.dcos_version}"
-
-  #ansible related config
-  ansible_bundled_container = "fatz/dcos-ansible-bundle:additional-vars"
-
-  ansible_additional_config = <<EOF
-foo: bar
-bar: baz
-EOF
+  dcos_license_key_contents = local.dcos_license_key_contents
+  dcos_variant              = local.dcos_variant
+  dcos_version              = local.dcos_version
 
   # add additional agents to install run
-  additional_private_agent_ips = ["${concat(module.dcos-usw2.private_agents.private_ips,module.dcos-euw1.private_agents.private_ips)}"]
+  additional_private_agent_ips = concat(
+    module.dcos-usw2.private_agents_private_ips,
+    module.dcos-euw1.private_agents_private_ips,
+  )
 }
 
 ############################################################
@@ -83,13 +78,13 @@ EOF
 ############################################################
 module "dcos-usw2" {
   source  = "dcos-terraform/infrastructure/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   admin_ips   = ["${data.http.whatismyip.body}/32"]
   name_prefix = "usw2"
 
-  cluster_name               = "${local.cluster_name}"
-  accepted_internal_networks = "${local.allowed_internal_networks}"
+  cluster_name               = local.cluster_name
+  accepted_internal_networks = local.allowed_internal_networks
 
   num_masters        = 0
   num_private_agents = 1
@@ -98,28 +93,28 @@ module "dcos-usw2" {
   lb_disable_public_agents = true
   lb_disable_masters       = true
 
-  ssh_public_key_file = "${local.ssh_public_key_file}"
-  subnet_range        = "${local.region_networks["us-west-2"]}"
+  ssh_public_key_file = local.ssh_public_key_file
+  subnet_range        = local.region_networks["us-west-2"]
 
   providers = {
-    aws = "aws.us-west-2"
+    aws = aws.us-west-2
   }
 }
 
 # connect to master region
 module "vpc-connection-master-usw2" {
-  source  = "dcos-terraform/vpc-peering/aws" // module init the peering
-  version = "~> 0.2.0"
+  source  = "dcos-terraform/vpc-peering/aws"
+  version = "~> 0.3.0"
 
   providers = {
-    "aws.local"  = "aws.master"
-    "aws.remote" = "aws.us-west-2"
+    aws.local  = aws.master
+    aws.remote = aws.us-west-2
   }
 
-  local_vpc_id        = "${module.dcos.infrastructure.vpc.id}"
-  local_subnet_range  = "${local.region_networks["master"]}"
-  remote_vpc_id       = "${module.dcos-usw2.vpc.id}"
-  remote_subnet_range = "${local.region_networks["us-west-2"]}"
+  local_vpc_id        = module.dcos.infrastructure_vpc_id
+  local_subnet_range  = local.region_networks["master"]
+  remote_vpc_id       = module.dcos-usw2.vpc_id
+  remote_subnet_range = local.region_networks["us-west-2"]
 }
 
 ############################################################
@@ -127,13 +122,13 @@ module "vpc-connection-master-usw2" {
 ############################################################
 module "dcos-euw1" {
   source  = "dcos-terraform/infrastructure/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   admin_ips   = ["${data.http.whatismyip.body}/32"]
   name_prefix = "euw1"
 
-  cluster_name               = "${local.cluster_name}"
-  accepted_internal_networks = "${local.allowed_internal_networks}"
+  cluster_name               = local.cluster_name
+  accepted_internal_networks = local.allowed_internal_networks
 
   num_masters        = 0
   num_private_agents = 1
@@ -142,31 +137,31 @@ module "dcos-euw1" {
   lb_disable_public_agents = true
   lb_disable_masters       = true
 
-  ssh_public_key_file = "${local.ssh_public_key_file}"
-  subnet_range        = "${local.region_networks["eu-west-1"]}"
+  ssh_public_key_file = local.ssh_public_key_file
+  subnet_range        = local.region_networks["eu-west-1"]
 
   providers = {
-    aws = "aws.eu-west-1"
+    aws = aws.eu-west-1
   }
 }
 
 # connect to master region
 module "vpc-connection-master-euw1" {
-  source  = "dcos-terraform/vpc-peering/aws" // module init the peering
-  version = "~> 0.2.0"
+  source  = "dcos-terraform/vpc-peering/aws"
+  version = "~> 0.3.0"
 
   providers = {
-    "aws.local"  = "aws.master"
-    "aws.remote" = "aws.eu-west-1"
+    aws.local  = aws.master
+    aws.remote = aws.eu-west-1
   }
 
-  local_vpc_id        = "${module.dcos.infrastructure.vpc.id}"
-  local_subnet_range  = "${local.region_networks["master"]}"
-  remote_vpc_id       = "${module.dcos-euw1.vpc.id}"
-  remote_subnet_range = "${local.region_networks["eu-west-1"]}"
+  local_vpc_id        = module.dcos.infrastructure_vpc_id
+  local_subnet_range  = local.region_networks["master"]
+  remote_vpc_id       = module.dcos-euw1.vpc_id
+  remote_subnet_range = local.region_networks["eu-west-1"]
 }
 
 output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${module.dcos.masters-loadbalancer}"
+  value       = module.dcos.masters-loadbalancer
 }

@@ -1,4 +1,5 @@
-provider "aws" {}
+provider "aws" {
+}
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
@@ -11,13 +12,13 @@ locals {
 
 module "dcos" {
   source  = "dcos-terraform/dcos/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.3.0"
 
   providers = {
-    aws = "aws"
+    aws = aws
   }
 
-  cluster_name        = "${local.cluster_name}"
+  cluster_name        = local.cluster_name
   ssh_public_key_file = "~/.ssh/id_rsa.pub"
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
@@ -29,8 +30,8 @@ module "dcos" {
   bootstrap_instance_type = "m4.xlarge"
 
   dcos_variant              = "ee"
-  dcos_version              = "1.13.3"
-  dcos_license_key_contents = "${file("~/license.txt")}"
+  dcos_version              = "2.0.4"
+  dcos_license_key_contents = file("~/license.txt")
 
   # provide a SHA512 hashed password, here "deleteme"
   dcos_superuser_password_hash = "$6$rounds=656000$YSvuFmasQDXheddh$TpYlCxNHF6PbsGkjlK99Pwxg7D0mgWJ.y0hE2JKoa61wHx.1wtxTAHVRHfsJU9zzHWDoE08wpdtToHimNR9FJ/"
@@ -39,7 +40,7 @@ module "dcos" {
 
 output "masters_dns_name" {
   description = "This is the load balancer address to access the DC/OS UI"
-  value       = "${module.dcos.masters-loadbalancer}"
+  value       = module.dcos.masters-loadbalancer
 }
 
 #provider "dcos" {}
@@ -56,4 +57,3 @@ output "masters_dns_name" {
 #
 #  description = "testjob1 description"
 #}
-
