@@ -27,7 +27,7 @@ locals {
   dcos_license_key_contents = file("~/license.txt")
   dcos_instance_os          = "centos_7"
   dcos_variant              = "ee"
-  dcos_version              = "2.0.4"
+  dcos_version              = "2.1.0"
 
   region_networks = {
     // dont use 172.17/26 as its used by docker.

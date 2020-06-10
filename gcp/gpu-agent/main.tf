@@ -17,7 +17,7 @@ locals {
   dcos_license_key_contents = file("~/license.txt")
   dcos_instance_os          = "centos_7"
   dcos_variant              = "ee"
-  dcos_version              = "2.0.4"
+  dcos_version              = "2.1.0"
 
   # Check https://cloud.google.com/compute/docs/gpus for available zones
   gpu_zone = ["us-west1-b"]

@@ -32,7 +32,7 @@ module "dcos" {
   bootstrap_machine_type = "n1-standard-4"
 
   dcos_variant              = "ee"
-  dcos_version              = "2.0.4"
+  dcos_version              = "2.1.0"
   dcos_license_key_contents = file("~/license.txt")
 
   # provide a SHA512 hashed password, here "deleteme"
