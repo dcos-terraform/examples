@@ -1,6 +1,9 @@
 provider "azurerm" {
-  version = "~> 1.44"
+  version = "=2.14.0"
+
+  features {}
 }
+
 
 # Used to determine your public IP for forwarding rules
 data "http" "whatismyip" {
@@ -8,7 +11,7 @@ data "http" "whatismyip" {
 }
 
 locals {
-  cluster_name = "generic-dcos-ee-demo"
+  cluster_name = "simple"
 }
 
 module "dcos" {
