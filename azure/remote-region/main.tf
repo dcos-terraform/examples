@@ -1,5 +1,7 @@
 provider "azurerm" {
-  version = "~> 1.44"
+  version = "=2.14.0"
+
+  features {}
 }
 
 data "http" "whatismyip" {
@@ -43,7 +45,7 @@ module "dcos" {
   admin_ips           = ["${data.http.whatismyip.body}/32"]
 
   num_masters        = 1
-  num_private_agents = 1
+  num_private_agents = 3
   num_public_agents  = 1
 
   dcos_instance_os          = local.dcos_instance_os

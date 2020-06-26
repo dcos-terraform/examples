@@ -1,5 +1,7 @@
 provider "azurerm" {
-  version = "~> 1.44"
+  version = "=2.14.0"
+
+  features {}
 }
 
 # Used to determine your public IP for forwarding rules
